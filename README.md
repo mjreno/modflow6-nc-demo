@@ -5,14 +5,16 @@ This repository has been set up to provide a few NetCDF4 example files
 in the context of existing MODFLOW 6 autotests for the purposes of review
 and feedback.
 
-Any part of this proposal is open to discussion and modification, please
-provide feedback in any format that is convenient including updates to
-this repository (e.g. discussions).  
+Any part of this proposal is open to discussion and modification, feel
+free to create a discussion or otherwise send feedback.
 
 Examples are under the examples directory and the complimentary ASCII
 examples are also there for comparison.  An additional ncdump file of
 the *.nc* file has also been added to each netcdf run directory for
 convenience- these are named with the extension *.nc.out*
+
+A starting point for the each example is to compare GWF model namefiles
+for the ASCII and netcdf tests.
 
 File organization and purpose
 -----------------------------
@@ -23,17 +25,16 @@ with IDM.
 
 Basic assumptions:
 * A NetCDF4 file describes inputs for a single Model
-* The NetCDF4 input file can contain any information beyond what is
-  is intended to describe input for Model, however Model input must
-  tagged with modflow6 attributes to be properly read as input
+* The NetCDF4 input file can contain any information beyond modflow6
+  specific input for the model, however the model input must
+  be tagged with modflow6 attributes to be properly read and loaded.
 * All MODFLOW 6 NetCDF4 inputs will have the extension ".nc", which
   will be reserved for netcdf files.
-* Only Model NetCDF4 input file will be supported per Model.  As can
-  be seen in the packages, this means that the same file name can
-  be found multiple time in a Model namefile packages block, and an
-  error should result if more than one netcdf input file name appears
-  in the block.
-* Variable names are not inherently meaninful to MODFLOW 6.  Variable
+* Only one NetCDF4 input file will be supported per model.  This
+  means that the same file name can be found multiple time in a model
+  namefile packages block, and an error should result if more than one
+  unique netcdf input file name appears in the block.
+* Variable names are not inherently meaningful to MODFLOW 6.  Variable
   attributes drive the reading and loading of input.
 * List based input is not aggregated into a single block of data as
   with ASCII based inputs but instead is considered the set of input
@@ -44,11 +45,11 @@ MODFLOW 6 NetCDF attributes
 
 Attributes are the primary mechanism enabling Model input to be correctly
 read by MODFLOW 6. It is proposed that a well described set of file and
-variable scoped attributes is defined to support this effort.  The names
-and purposes described here are open to discussion. A common prefix for
-all MODFLOW 6 NetCDF4 attributes is perhaps useful, and in these examples
-the prefix "modflow6_" is consistently used.  It is intended that the
-MODFLOW 6 NetCDF supported attribute set can be extended as appropriate.
+variable scoped attributes be defined to support this effort.  The names
+and purposes described here are open for discussion. A common prefix for
+all MODFLOW 6 NetCDF4 attributes is probably useful, and in these examples
+the prefix "modflow6_" is used.  It is intended that the MODFLOW 6 NetCDF
+supported attribute set can be extended as appropriate.
 
 ### Global attributes
 
@@ -87,7 +88,7 @@ read and load variable period data at the right time.
 There are 2 types of IPER data. Package IPER variables apply to List based
 and Array based input.  These variables are 1d integer arrays and are identified
 with the variable attribute "modflow6_iper".  The name of this special variable
-is not meaningful to MODFLOW 6.  This type of this attribute is a scalar that
+is not meaningful to MODFLOW 6.  The type of this attribute is a scalar that
 describes the size of the 1d data array associated with the variable.  The
 following is a simple example for a CHD package instance that would have three
 period blocks defined in an ASCII input file for periods 1, 5 and 8:
@@ -135,7 +136,7 @@ double rcha_0_recharge_griddata(three, nlay, nrow, ncol) ;
 MODFLOW 6 NetCDF Array parameter input format
 ---------------------------------------------
 
-It is perhaps useful to structure certain array input (e.g. RECHARGE) as
+It may be useful to structure certain array input (e.g. RECHARGE) as
 fully gridded, when possible, for the additional purpose of reading and
 visualizing the NetCDF file with external tools.  
 
@@ -164,10 +165,10 @@ rcha_0_recharge_griddata =
 
 This example defines a grid with 1 nper, 2 layers, 4 rows and 5 columns.
 
-The data shows that DNODATA is being used as a FillValue for cells
-with no data.  Furthermore, IRCH is not explicitly required (and
-is not in the example netcdf file) as it can be inferred from the
-griddata.  It's inclusion does simplify processing, however, and
+The data shows that DNODATA is used as a FillValue for cells
+with no data.  IRCH is not explicitly required (and is not
+in the example netcdf file) as it can be inferred from the
+griddata.  It's inclusion may simplify processing, however, and
 ultimately it may be required.
 
 It should also be noted that index order for multi-dimensional data
