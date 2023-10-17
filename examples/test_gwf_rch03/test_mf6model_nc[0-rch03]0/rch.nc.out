@@ -1,0 +1,189 @@
+netcdf rch {
+dimensions:
+	lencharstr = 300 ;
+	nper = 1 ;
+	ncelldim = 3 ;
+	nlay = 2 ;
+	nrow = 4 ;
+	ncol = 5 ;
+	nodes = 40 ;
+	ncpl = 20 ;
+	one = 1 ;
+variables:
+	int dis_nlay ;
+		dis_nlay:modflow6_component = "GWF/DIS" ;
+		dis_nlay:modflow6_package = "DIS" ;
+		dis_nlay:modflow6_block = "DIMENSIONS" ;
+		dis_nlay:modflow6_param = "nlay" ;
+	int dis_nrow ;
+		dis_nrow:modflow6_component = "GWF/DIS" ;
+		dis_nrow:modflow6_package = "DIS" ;
+		dis_nrow:modflow6_block = "DIMENSIONS" ;
+		dis_nrow:modflow6_param = "nrow" ;
+	int dis_ncol ;
+		dis_ncol:modflow6_component = "GWF/DIS" ;
+		dis_ncol:modflow6_package = "DIS" ;
+		dis_ncol:modflow6_block = "DIMENSIONS" ;
+		dis_ncol:modflow6_param = "ncol" ;
+	double dis_delr(ncol) ;
+		dis_delr:modflow6_component = "GWF/DIS" ;
+		dis_delr:modflow6_package = "DIS" ;
+		dis_delr:modflow6_block = "GRIDDATA" ;
+		dis_delr:modflow6_param = "delr" ;
+	double dis_delc(nrow) ;
+		dis_delc:modflow6_component = "GWF/DIS" ;
+		dis_delc:modflow6_package = "DIS" ;
+		dis_delc:modflow6_block = "GRIDDATA" ;
+		dis_delc:modflow6_param = "delc" ;
+	double dis_top(nrow, ncol) ;
+		dis_top:modflow6_component = "GWF/DIS" ;
+		dis_top:modflow6_package = "DIS" ;
+		dis_top:modflow6_block = "GRIDDATA" ;
+		dis_top:modflow6_param = "top" ;
+	double dis_botm(nlay, nrow, ncol) ;
+		dis_botm:modflow6_component = "GWF/DIS" ;
+		dis_botm:modflow6_package = "DIS" ;
+		dis_botm:modflow6_block = "GRIDDATA" ;
+		dis_botm:modflow6_param = "botm" ;
+	int dis_idomain(nlay, nrow, ncol) ;
+		dis_idomain:modflow6_component = "GWF/DIS" ;
+		dis_idomain:modflow6_package = "DIS" ;
+		dis_idomain:modflow6_block = "GRIDDATA" ;
+		dis_idomain:modflow6_param = "idomain" ;
+	int npf_save_flows ;
+		npf_save_flows:modflow6_component = "GWF/NPF" ;
+		npf_save_flows:modflow6_package = "NPF" ;
+		npf_save_flows:modflow6_block = "OPTIONS" ;
+		npf_save_flows:modflow6_param = "save_flows" ;
+	int npf_icelltype(nodes) ;
+		npf_icelltype:modflow6_component = "GWF/NPF" ;
+		npf_icelltype:modflow6_package = "NPF" ;
+		npf_icelltype:modflow6_block = "GRIDDATA" ;
+		npf_icelltype:modflow6_param = "icelltype" ;
+	double npf_k(nodes) ;
+		npf_k:modflow6_component = "GWF/NPF" ;
+		npf_k:modflow6_package = "NPF" ;
+		npf_k:modflow6_block = "GRIDDATA" ;
+		npf_k:modflow6_param = "k" ;
+	int chd_0_maxbound ;
+		chd_0_maxbound:modflow6_component = "GWF/CHD" ;
+		chd_0_maxbound:modflow6_package = "CHD_0" ;
+		chd_0_maxbound:modflow6_block = "DIMENSIONS" ;
+		chd_0_maxbound:modflow6_param = "maxbound" ;
+	int chd_0_iper(one) ;
+		chd_0_iper:modflow6_component = "GWF/CHD" ;
+		chd_0_iper:modflow6_package = "CHD_0" ;
+		chd_0_iper:modflow6_iper = 1LL ;
+	int chd_0_cellid(one, one, ncelldim) ;
+		chd_0_cellid:_FillValue = -2147483647 ;
+		chd_0_cellid:modflow6_component = "GWF/CHD" ;
+		chd_0_cellid:modflow6_package = "CHD_0" ;
+		chd_0_cellid:modflow6_block = "PERIOD" ;
+		chd_0_cellid:modflow6_param = "cellid" ;
+	double chd_0_head(one, one) ;
+		chd_0_head:_FillValue = 3.e+30 ;
+		chd_0_head:modflow6_component = "GWF/CHD" ;
+		chd_0_head:modflow6_package = "CHD_0" ;
+		chd_0_head:modflow6_block = "PERIOD" ;
+		chd_0_head:modflow6_param = "head" ;
+	int rcha_0_readasarrays ;
+		rcha_0_readasarrays:modflow6_component = "GWF/RCHA" ;
+		rcha_0_readasarrays:modflow6_package = "RCHA_0" ;
+		rcha_0_readasarrays:modflow6_block = "OPTIONS" ;
+		rcha_0_readasarrays:modflow6_param = "readasarrays" ;
+	int rcha_0_print_flows ;
+		rcha_0_print_flows:modflow6_component = "GWF/RCHA" ;
+		rcha_0_print_flows:modflow6_package = "RCHA_0" ;
+		rcha_0_print_flows:modflow6_block = "OPTIONS" ;
+		rcha_0_print_flows:modflow6_param = "print_flows" ;
+	double rcha_0_recharge_griddata(one, nlay, nrow, ncol) ;
+		rcha_0_recharge_griddata:modflow6_component = "GWF/RCHA" ;
+		rcha_0_recharge_griddata:modflow6_package = "RCHA_0" ;
+		rcha_0_recharge_griddata:modflow6_block = "PERIOD" ;
+		rcha_0_recharge_griddata:modflow6_param = "recharge" ;
+		rcha_0_recharge_griddata:modflow6_griddata = 1LL ;
+		rcha_0_recharge_griddata:modflow6_param_iper = 1LL ;
+	int rcha_0_iper(one) ;
+		rcha_0_iper:modflow6_component = "GWF/RCHA_0" ;
+		rcha_0_iper:modflow6_package = "RCHA_0" ;
+		rcha_0_iper:modflow6_iper = 1LL ;
+
+// global attributes:
+		:description = "MODFLOW 6 NetCDF4 file prototype" ;
+		:history = "Created Tue Oct 17 14:01:35 2023" ;
+		:source = "mf6netcdf4.py" ;
+		:modflow6_modeltype = "GWF6" ;
+		:modflow6_modelname = "RCH" ;
+		:Conventions = "CF-1.8" ;
+data:
+
+ dis_nlay = 2 ;
+
+ dis_nrow = 4 ;
+
+ dis_ncol = 5 ;
+
+ dis_delr = 1, 1, 1, 1, 1 ;
+
+ dis_delc = 1, 1, 1, 1 ;
+
+ dis_top =
+  100, 100, 100, 100, 100,
+  100, 100, 100, 100, 100,
+  100, 100, 100, 100, 100,
+  100, 100, 100, 100, 100 ;
+
+ dis_botm =
+  50, 50, 50, 50, 50,
+  50, 50, 50, 50, 50,
+  50, 50, 50, 50, 50,
+  50, 50, 50, 50, 50,
+  0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0 ;
+
+ dis_idomain =
+  0, 0, 0, 0, 0,
+  0, -1, 1, -1, 0,
+  0, -1, 1, -1, 0,
+  0, 0, 0, 0, 0,
+  1, 1, 1, 1, 1,
+  1, 1, 1, -1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1 ;
+
+ npf_save_flows = 1 ;
+
+ npf_icelltype = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ npf_k = 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ;
+
+ chd_0_maxbound = 1 ;
+
+ chd_0_iper = 1 ;
+
+ chd_0_cellid =
+  2, 1, 1 ;
+
+ chd_0_head =
+  100 ;
+
+ rcha_0_readasarrays = 1 ;
+
+ rcha_0_print_flows = 1 ;
+
+ rcha_0_recharge_griddata =
+  3e+30, 2, 3, 4, 5,
+  6, 3e+30, 8, 3e+30, 10,
+  11, 3e+30, 13, 3e+30, 15,
+  16, 17, 18, 19, 20,
+  1, 3e+30, 3e+30, 3e+30, 3e+30,
+  3e+30, 7, 3e+30, 9, 3e+30,
+  3e+30, 12, 3e+30, 14, 3e+30,
+  3e+30, 3e+30, 3e+30, 3e+30, 3e+30 ;
+
+ rcha_0_iper = 1 ;
+}
