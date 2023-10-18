@@ -13,13 +13,13 @@ examples are also there for comparison.  An additional ncdump file of
 the *.nc* file has also been added to each netcdf run directory for
 convenience- these are named with the extension *.nc.out*
 
-A starting point for the each example is to compare GWF model namefiles
-for the ASCII and netcdf tests.
+A starting point for each example is to compare GWF model namefiles
+for each paired ASCII and netcdf test.
 
 File organization and purpose
 -----------------------------
 
-The NetCDF files in the examples are intended to demonstrate the ability
+The example NetCDF files are intended to demonstrate their ability
 to serve as Model input sources for packages that are already integrated
 with IDM.
 
@@ -31,14 +31,14 @@ Basic assumptions:
 * All MODFLOW 6 NetCDF4 inputs will have the extension ".nc", which
   will be reserved for netcdf files.
 * Only one NetCDF4 input file will be supported per model.  This
-  means that the same file name can be found multiple time in a model
+  means that the same file name can be found multiple times in a model
   namefile packages block, and an error should result if more than one
   unique netcdf input file name appears in the block.
 * Variable names are not inherently meaningful to MODFLOW 6.  Variable
   attributes drive the reading and loading of input.
 * List based input is not aggregated into a single block of data as
-  with ASCII based inputs but instead is considered the set of input
-  parameters needed for that package.
+  with ASCII based inputs but instead is considered the set of dynamic
+  input parameters needed for that package.
 
 MODFLOW 6 NetCDF attributes
 ---------------------------
@@ -56,7 +56,7 @@ supported attribute set can be extended as appropriate.
 File scoped attributes apply to all MODFLOW 6 variable input that also
 use appropriate variable attributes.
 
-| Attribute             |           Purpose             |     Example(s)         |
+| Attribute             |           Meaning             |     Example(s)         |
 |-----------------------|-------------------------------|------------------------|
 | modflow6_modeltype    | Type of MODFLOW 6 Model       | GWF6, GWT6             |
 | modflow6_modelname    | Name of MODFLOW 6 Model       | "RCH", "MYMODEL"       |
@@ -66,7 +66,7 @@ use appropriate variable attributes.
 These variable attributes describe input parameters for MODFLOW 6 input
 processing.
 
-| Attribute             |           Purpose             |     Example(s)              |        Comment         
+| Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
 | modflow6_component    | Variable component string     | "GWF/CHD", "GWF/RCHA"       | Could be replaced with modflow6_ptype (package type)
 | modflow6_package      | Variable package name         | "CHD_0", "RCHA_0"           |
@@ -83,7 +83,7 @@ MODFLOW 6 NetCDF iper variables
 The intent of iper variable is to reduce the amount of data written to the
 NetCDF file.  IPER arrays provide a list of integers that are analogous to
 ASCII input period block variables. The indexes of IPER arrays are used to
-read and load variable period data at the right time.
+access relevant read and load variable period data at the right time.
 
 There are 2 types of IPER data. Package IPER variables apply to List based
 and Array based input.  These variables are 1d integer arrays and are identified
@@ -110,6 +110,8 @@ have new data for a given period.  When READASARRAYS is read for a package
 that supports Array based input, PERIOD data variables must define two 
 additional attributes: modflow6_griddata, which defines the size of the 
 variable iper 1d array, and modflow6_param_iper, which is the 1d data array.
+With array input, the modflow6_param_iper 1d array should always be a subset
+of the pacakge modflow6_iper 1d array.
 
 An example:
 ```
@@ -122,7 +124,7 @@ int rcha_0_iper(three) ;
 // iper variable data
 rcha_0_iper = 1, 5, 8 ;
 
-// recharge declaration with griddata set to size 3
+// recharge declaration with griddata set to size 2
 // and param_iper attribute containing the data
 double rcha_0_recharge_griddata(three, nlay, nrow, ncol) ;
         rcha_0_recharge_griddata:modflow6_component = "GWF/RCHA" ;
@@ -138,7 +140,7 @@ MODFLOW 6 NetCDF Array parameter input format
 
 It may be useful to structure certain array input (e.g. RECHARGE) as
 fully gridded, when possible, for the additional purpose of reading and
-visualizing the NetCDF file with external tools.  
+visualizing the NetCDF file with external tools.
 
 A simple example from example test_gwf_rch03 is shown here:
 ```
@@ -169,7 +171,10 @@ The data shows that DNODATA is used as a FillValue for cells
 with no data.  IRCH is not explicitly required (and is not
 in the example netcdf file) as it can be inferred from the
 griddata.  It's inclusion may simplify processing, however, and
-ultimately it may be required.
+ultimately it may be required.  (Note: If the attribute \_FillValue
+had been defined for the variable (as should typically be the case)
+then the ncdump output for this data would show underscores for the
+DNODATA values.)
 
 It should also be noted that index order for multi-dimensional data
 intended for visualization is likely important and could change
