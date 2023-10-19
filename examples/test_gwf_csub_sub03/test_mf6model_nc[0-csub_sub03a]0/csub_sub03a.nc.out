@@ -1,0 +1,422 @@
+netcdf csub_sub03a {
+dimensions:
+	lencharstr = 300 ;
+	nper = 31 ;
+	ncelldim = 3 ;
+	nlay = 3 ;
+	nrow = 10 ;
+	ncol = 10 ;
+	nodes = 300 ;
+	ncpl = 100 ;
+	three = 3 ;
+	four = 4 ;
+	one = 1 ;
+variables:
+	int dis_nlay ;
+		dis_nlay:modflow6_component = "GWF/DIS" ;
+		dis_nlay:modflow6_package = "DIS" ;
+		dis_nlay:modflow6_block = "DIMENSIONS" ;
+		dis_nlay:modflow6_param = "nlay" ;
+	int dis_nrow ;
+		dis_nrow:modflow6_component = "GWF/DIS" ;
+		dis_nrow:modflow6_package = "DIS" ;
+		dis_nrow:modflow6_block = "DIMENSIONS" ;
+		dis_nrow:modflow6_param = "nrow" ;
+	int dis_ncol ;
+		dis_ncol:modflow6_component = "GWF/DIS" ;
+		dis_ncol:modflow6_package = "DIS" ;
+		dis_ncol:modflow6_block = "DIMENSIONS" ;
+		dis_ncol:modflow6_param = "ncol" ;
+	double dis_delr(ncol) ;
+		dis_delr:_FillValue = 3.e+30 ;
+		dis_delr:modflow6_component = "GWF/DIS" ;
+		dis_delr:modflow6_package = "DIS" ;
+		dis_delr:modflow6_block = "GRIDDATA" ;
+		dis_delr:modflow6_param = "delr" ;
+	double dis_delc(nrow) ;
+		dis_delc:_FillValue = 3.e+30 ;
+		dis_delc:modflow6_component = "GWF/DIS" ;
+		dis_delc:modflow6_package = "DIS" ;
+		dis_delc:modflow6_block = "GRIDDATA" ;
+		dis_delc:modflow6_param = "delc" ;
+	double dis_top(nrow, ncol) ;
+		dis_top:_FillValue = 3.e+30 ;
+		dis_top:modflow6_component = "GWF/DIS" ;
+		dis_top:modflow6_package = "DIS" ;
+		dis_top:modflow6_block = "GRIDDATA" ;
+		dis_top:modflow6_param = "top" ;
+	double dis_botm(nlay, nrow, ncol) ;
+		dis_botm:_FillValue = 3.e+30 ;
+		dis_botm:modflow6_component = "GWF/DIS" ;
+		dis_botm:modflow6_package = "DIS" ;
+		dis_botm:modflow6_block = "GRIDDATA" ;
+		dis_botm:modflow6_param = "botm" ;
+	int npf_save_flows ;
+		npf_save_flows:modflow6_component = "GWF/NPF" ;
+		npf_save_flows:modflow6_package = "NPF" ;
+		npf_save_flows:modflow6_block = "OPTIONS" ;
+		npf_save_flows:modflow6_param = "save_flows" ;
+	int npf_icelltype(nodes) ;
+		npf_icelltype:_FillValue = -2147483647 ;
+		npf_icelltype:modflow6_component = "GWF/NPF" ;
+		npf_icelltype:modflow6_package = "NPF" ;
+		npf_icelltype:modflow6_block = "GRIDDATA" ;
+		npf_icelltype:modflow6_param = "icelltype" ;
+	double npf_k(nodes) ;
+		npf_k:_FillValue = 3.e+30 ;
+		npf_k:modflow6_component = "GWF/NPF" ;
+		npf_k:modflow6_package = "NPF" ;
+		npf_k:modflow6_block = "GRIDDATA" ;
+		npf_k:modflow6_param = "k" ;
+	double npf_k33(nodes) ;
+		npf_k33:_FillValue = 3.e+30 ;
+		npf_k33:modflow6_component = "GWF/NPF" ;
+		npf_k33:modflow6_package = "NPF" ;
+		npf_k33:modflow6_block = "GRIDDATA" ;
+		npf_k33:modflow6_param = "k33" ;
+	int rcha_0_readasarrays ;
+		rcha_0_readasarrays:modflow6_component = "GWF/RCHA" ;
+		rcha_0_readasarrays:modflow6_package = "RCHA_0" ;
+		rcha_0_readasarrays:modflow6_block = "OPTIONS" ;
+		rcha_0_readasarrays:modflow6_param = "readasarrays" ;
+	double rcha_0_recharge_griddata(three, nlay, nrow, ncol) ;
+		rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
+		rcha_0_recharge_griddata:modflow6_component = "GWF/RCHA" ;
+		rcha_0_recharge_griddata:modflow6_package = "RCHA_0" ;
+		rcha_0_recharge_griddata:modflow6_block = "PERIOD" ;
+		rcha_0_recharge_griddata:modflow6_param = "recharge" ;
+		rcha_0_recharge_griddata:modflow6_griddata = 3LL ;
+		rcha_0_recharge_griddata:modflow6_param_iper = 1LL, 5LL, 8LL ;
+	int rcha_0_iper(three) ;
+		rcha_0_iper:modflow6_component = "GWF/RCHA_0" ;
+		rcha_0_iper:modflow6_package = "RCHA_0" ;
+		rcha_0_iper:modflow6_iper = 3LL ;
+	int wel_0_print_input ;
+		wel_0_print_input:modflow6_component = "GWF/WEL" ;
+		wel_0_print_input:modflow6_package = "WEL_0" ;
+		wel_0_print_input:modflow6_block = "OPTIONS" ;
+		wel_0_print_input:modflow6_param = "print_input" ;
+	int wel_0_print_flows ;
+		wel_0_print_flows:modflow6_component = "GWF/WEL" ;
+		wel_0_print_flows:modflow6_package = "WEL_0" ;
+		wel_0_print_flows:modflow6_block = "OPTIONS" ;
+		wel_0_print_flows:modflow6_param = "print_flows" ;
+	int wel_0_save_flows ;
+		wel_0_save_flows:modflow6_component = "GWF/WEL" ;
+		wel_0_save_flows:modflow6_package = "WEL_0" ;
+		wel_0_save_flows:modflow6_block = "OPTIONS" ;
+		wel_0_save_flows:modflow6_param = "save_flows" ;
+	int wel_0_maxbound ;
+		wel_0_maxbound:modflow6_component = "GWF/WEL" ;
+		wel_0_maxbound:modflow6_package = "WEL_0" ;
+		wel_0_maxbound:modflow6_block = "DIMENSIONS" ;
+		wel_0_maxbound:modflow6_param = "maxbound" ;
+	int wel_0_iper(one) ;
+		wel_0_iper:modflow6_component = "GWF/WEL" ;
+		wel_0_iper:modflow6_package = "WEL_0" ;
+		wel_0_iper:modflow6_iper = 1LL ;
+	int wel_0_cellid(one, four, ncelldim) ;
+		wel_0_cellid:_FillValue = -2147483647 ;
+		wel_0_cellid:modflow6_component = "GWF/WEL" ;
+		wel_0_cellid:modflow6_package = "WEL_0" ;
+		wel_0_cellid:modflow6_block = "PERIOD" ;
+		wel_0_cellid:modflow6_param = "cellid" ;
+	double wel_0_q(one, four) ;
+		wel_0_q:_FillValue = 3.e+30 ;
+		wel_0_q:modflow6_component = "GWF/WEL" ;
+		wel_0_q:modflow6_package = "WEL_0" ;
+		wel_0_q:modflow6_block = "PERIOD" ;
+		wel_0_q:modflow6_param = "q" ;
+	int chd_0_save_flows ;
+		chd_0_save_flows:modflow6_component = "GWF/CHD" ;
+		chd_0_save_flows:modflow6_package = "CHD_0" ;
+		chd_0_save_flows:modflow6_block = "OPTIONS" ;
+		chd_0_save_flows:modflow6_param = "save_flows" ;
+	int chd_0_maxbound ;
+		chd_0_maxbound:modflow6_component = "GWF/CHD" ;
+		chd_0_maxbound:modflow6_package = "CHD_0" ;
+		chd_0_maxbound:modflow6_block = "DIMENSIONS" ;
+		chd_0_maxbound:modflow6_param = "maxbound" ;
+	int chd_0_iper(one) ;
+		chd_0_iper:modflow6_component = "GWF/CHD" ;
+		chd_0_iper:modflow6_package = "CHD_0" ;
+		chd_0_iper:modflow6_iper = 1LL ;
+	int chd_0_cellid(one, four, ncelldim) ;
+		chd_0_cellid:_FillValue = -2147483647 ;
+		chd_0_cellid:modflow6_component = "GWF/CHD" ;
+		chd_0_cellid:modflow6_package = "CHD_0" ;
+		chd_0_cellid:modflow6_block = "PERIOD" ;
+		chd_0_cellid:modflow6_param = "cellid" ;
+	double chd_0_head(one, four) ;
+		chd_0_head:_FillValue = 3.e+30 ;
+		chd_0_head:modflow6_component = "GWF/CHD" ;
+		chd_0_head:modflow6_package = "CHD_0" ;
+		chd_0_head:modflow6_block = "PERIOD" ;
+		chd_0_head:modflow6_param = "head" ;
+
+// global attributes:
+		:description = "MODFLOW 6 NetCDF4 file prototype" ;
+		:history = "Created Wed Oct 18 21:01:05 2023" ;
+		:source = "mf6netcdf4.py" ;
+		:modflow6_modeltype = "GWF6" ;
+		:modflow6_modelname = "CSUB_SUB03A" ;
+		:Conventions = "CF-1.8" ;
+data:
+
+ dis_nlay = 3 ;
+
+ dis_nrow = 10 ;
+
+ dis_ncol = 10 ;
+
+ dis_delr = 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 ;
+
+ dis_delc = 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000 ;
+
+ dis_top =
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ dis_botm =
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -100, -100, -100, -100, -100, -100, -100, -100, -100, -100,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350,
+  -350, -350, -350, -350, -350, -350, -350, -350, -350, -350 ;
+
+ npf_save_flows = 1 ;
+
+ npf_icelltype = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ;
+
+ npf_k = 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
+    20, 20, 20, 20, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 20, 20, 
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 20, 20, 0.01, 0.01, 0.01, 
+    0.01, 0.01, 0.01, 0.01, 0.01, 20, 20, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 
+    0.01, 0.01, 20, 20, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 20, 
+    20, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 20, 20, 0.01, 0.01, 
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 20, 20, 0.01, 0.01, 0.01, 0.01, 0.01, 
+    0.01, 0.01, 0.01, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 5, 5, 5, 5, 
+    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 ;
+
+ npf_k33 = 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 7.5e-05, 
+    7.5e-05, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 1000000, 
+    1000000, 1000000, 1000000, 1000000, 1000000 ;
+
+ rcha_0_readasarrays = 1 ;
+
+ rcha_0_recharge_griddata =
+  0.0015, 0.0015, 0, 0, 0, 0, 0, 0, 0.0015, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  0.0015, 0.0015, 0, 0, 0, 0, 0, 0, 0.0015, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0.0015,
+  0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _,
+  _, _, _, _, _, _, _, _, _, _ ;
+
+ rcha_0_iper = 1, 5, 8 ;
+
+ wel_0_print_input = 1 ;
+
+ wel_0_print_flows = 1 ;
+
+ wel_0_save_flows = 1 ;
+
+ wel_0_maxbound = 4 ;
+
+ wel_0_iper = 2 ;
+
+ wel_0_cellid =
+  3, 3, 6,
+  3, 3, 7,
+  3, 4, 6,
+  3, 4, 7 ;
+
+ wel_0_q =
+  -14000, -8000, -5000, -3000 ;
+
+ chd_0_save_flows = 1 ;
+
+ chd_0_maxbound = 4 ;
+
+ chd_0_iper = 1 ;
+
+ chd_0_cellid =
+  1, 10, 4,
+  1, 10, 5,
+  1, 10, 6,
+  1, 10, 7 ;
+
+ chd_0_head =
+  0, 0, 0, 0 ;
+}

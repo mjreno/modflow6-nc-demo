@@ -73,7 +73,7 @@ processing.
 | modflow6_block        | Variable dfn block name       | "OPTIONS", "PERIOD"         |
 | modflow6_param        | Variable dfn param tag        | "readasarrays", "head"      |
 | modflow6_iper         | IPER package variable, size   | modflow6_iper = 3           | IPER array size 3, described below
-| modflow6_griddata     | Griddata variable, size       | Lmodflow6_griddata = 3      | griddata variable, param IPER is size 3
+| modflow6_griddata     | Griddata variable, size       | modflow6_griddata = 3       | griddata variable, param IPER is size 3
 | modflow6_param_iper   | IPER array for griddata var   | modflow6_param_iper = 1,5,8 | griddata param iper array, described below
 
 
@@ -111,7 +111,7 @@ that supports Array based input, PERIOD data variables must define two
 additional attributes: modflow6_griddata, which defines the size of the 
 variable iper 1d array, and modflow6_param_iper, which is the 1d data array.
 With array input, the modflow6_param_iper 1d array should always be a subset
-of the pacakge modflow6_iper 1d array.
+of the package modflow6_iper 1d array.
 
 An example:
 ```
