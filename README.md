@@ -38,7 +38,7 @@ Basic assumptions:
   attributes drive the reading and loading of input.
 * List based input is not aggregated into a single block of data as
   with ASCII based inputs but instead is considered the set of dynamic
-  input parameters needed for that package.
+  input parameters, related by index, needed for that package.
 
 MODFLOW 6 NetCDF attributes
 ---------------------------
@@ -68,7 +68,7 @@ processing.
 
 | Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
-| modflow6_component    | Variable component string     | "GWF/CHD", "GWF/RCHA"       | Could be replaced with modflow6_ptype (package type)
+| modflow6_component    | Variable component string     | "GWF/CHD", "GWF/RCHA"       | Could be replaced with modflow6_ptype (package type).  Not strictly required.
 | modflow6_package      | Variable package name         | "CHD_0", "RCHA_0"           |
 | modflow6_block        | Variable dfn block name       | "OPTIONS", "PERIOD"         |
 | modflow6_param        | Variable dfn param tag        | "readasarrays", "head"      |
