@@ -43,6 +43,21 @@ Basic assumptions:
 MODFLOW 6 NetCDF attributes
 ---------------------------
 
+Attributes are a NetCDF feature that support the aim of self-describing
+files.  They can be used to describe additional properties of data or
+relationships between data.  They also provide scope when a single file
+supports multiple conventions.
+
+The example file structures are completely flat and contain some unnecesary
+reduncancy. The primary purpose of this review is to consider how runtime
+data is stored and retrieved, although any feedback on the organization
+of the variables is welcome as well.  Although a simple structure is the
+current goal, as it is thought to offer the best opportunity to integrate
+with other software that read NetCDF inputs, some improvements are likely to
+be made.  For example, an approach that aggregates block parameters in a
+container variable is described
+[here](https://github.com/mjreno/modflow6-nc-demo/discussions/3).
+
 Attributes are the primary mechanism enabling Model input to be correctly
 read by MODFLOW 6. It is proposed that a well described set of file and
 variable scoped attributes be defined to support this effort.  The names
