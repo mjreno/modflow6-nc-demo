@@ -1,0 +1,98 @@
+netcdf leftmodel {
+dimensions:
+	lencharstr = 300 ;
+	nper = 1 ;
+	nlay = 1 ;
+	nrow = 1 ;
+	ncol = 5 ;
+	nodes = 5 ;
+	ncpl = 5 ;
+	ncelldim = 3 ;
+	chd_0_maxbound = 1 ;
+	chd_0_niper = 1 ;
+variables:
+	int dis_nlay ;
+		dis_nlay:mf6_input = "DIS6:LEFTMODEL/DIS/NLAY" ;
+	int dis_nrow ;
+		dis_nrow:mf6_input = "DIS6:LEFTMODEL/DIS/NROW" ;
+	int dis_ncol ;
+		dis_ncol:mf6_input = "DIS6:LEFTMODEL/DIS/NCOL" ;
+	double dis_delr(ncol) ;
+		dis_delr:_FillValue = 3.e+30 ;
+		dis_delr:mf6_input = "DIS6:LEFTMODEL/DIS/DELR" ;
+	double dis_delc(nrow) ;
+		dis_delc:_FillValue = 3.e+30 ;
+		dis_delc:mf6_input = "DIS6:LEFTMODEL/DIS/DELC" ;
+	double dis_top(nrow, ncol) ;
+		dis_top:_FillValue = 3.e+30 ;
+		dis_top:mf6_input = "DIS6:LEFTMODEL/DIS/TOP" ;
+	double dis_botm(nlay, nrow, ncol) ;
+		dis_botm:_FillValue = 3.e+30 ;
+		dis_botm:mf6_input = "DIS6:LEFTMODEL/DIS/BOTM" ;
+	int npf_save_flows ;
+		npf_save_flows:mf6_input = "NPF6:LEFTMODEL/NPF/SAVE_FLOWS" ;
+	int npf_save_specific_discharge ;
+		npf_save_specific_discharge:mf6_input = "NPF6:LEFTMODEL/NPF/SAVE_SPECIFIC_DISCHARGE" ;
+	int npf_icelltype(nlay, nrow, ncol) ;
+		npf_icelltype:_FillValue = -2147483647 ;
+		npf_icelltype:mf6_input = "NPF6:LEFTMODEL/NPF/ICELLTYPE" ;
+	double npf_k(nlay, nrow, ncol) ;
+		npf_k:_FillValue = 3.e+30 ;
+		npf_k:mf6_input = "NPF6:LEFTMODEL/NPF/K" ;
+	int chd_0_maxbound ;
+		chd_0_maxbound:mf6_input = "CHD6:LEFTMODEL/CHD_0/MAXBOUND" ;
+	int chd_0_iper(chd_0_niper) ;
+		chd_0_iper:mf6_package = "CHD_0" ;
+		chd_0_iper:mf6_iper = 1LL ;
+	int chd_0_cellid(chd_0_niper, chd_0_maxbound, ncelldim) ;
+		chd_0_cellid:_FillValue = -2147483647 ;
+		chd_0_cellid:mf6_input = "CHD6:LEFTMODEL/CHD_0/CELLID" ;
+	double chd_0_head(chd_0_niper, chd_0_maxbound) ;
+		chd_0_head:_FillValue = 3.e+30 ;
+		chd_0_head:mf6_input = "CHD6:LEFTMODEL/CHD_0/HEAD" ;
+
+// global attributes:
+		:description = "MODFLOW 6 NetCDF4 file prototype" ;
+		:history = "Created Thu Oct 26 10:52:00 2023" ;
+		:source = "mf6netcdf4.py" ;
+		:mf6_modeltype = "GWF6" ;
+		:mf6_modelname = "LEFTMODEL" ;
+		:Conventions = "CF-1.8" ;
+data:
+
+ dis_nlay = 1 ;
+
+ dis_nrow = 1 ;
+
+ dis_ncol = 5 ;
+
+ dis_delr = 100, 100, 100, 100, 100 ;
+
+ dis_delc = 100 ;
+
+ dis_top =
+  0, 0, 0, 0, 0 ;
+
+ dis_botm =
+  -100, -100, -100, -100, -100 ;
+
+ npf_save_flows = 1 ;
+
+ npf_save_specific_discharge = 1 ;
+
+ npf_icelltype =
+  0, 0, 0, 0, 0 ;
+
+ npf_k =
+  1, 1, 1, 1, 1 ;
+
+ chd_0_maxbound = 1 ;
+
+ chd_0_iper = 1 ;
+
+ chd_0_cellid =
+  1, 1, 1 ;
+
+ chd_0_head =
+  1 ;
+}
