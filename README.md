@@ -73,7 +73,7 @@ processing.
 
 | Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
-| mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: <FTYPE>:<COMPONENT-NAME>/<SUBCOMPONENT-NAME>/<TAG>
+| mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: [PKGTYPE]:[COMPONENT-NAME]/[SUBCOMPONENT-NAME]/[PARAM-TAG]
 | mf6_package           | IPER variable package         | "WEL-1"                     | Use with mf6_iper to designate associated package
 | mf6_iper              | IPER package variable, size   | mf6_iper = 3                | Package IPER array size 3, described below
 | mf6_griddata          | Griddata iper integer array   | mf6_griddata = 1,5,8        | dynamic griddata variable load periods
@@ -112,7 +112,7 @@ however there is the additional need to describe whether individual parameters
 have new data for a given period.  When READASARRAYS is read for a package
 that supports Array based input, PERIOD data variables must define
 the additional attribute "mf6_griddata", a 1d data array that represents load
-periods for each parameter. The intent of this attribute is similar to that of
+periods for the parameter. The intent of this attribute is similar to that of
 the "mf6_iper" variable, and the mf6_griddata 1d array should always be a subset
 of the package mf6_iper 1d array.
 
@@ -136,8 +136,8 @@ double rcha_0_recharge_griddata(rcha_0_niper, nlay, nrow, ncol) ;
 MODFLOW 6 NetCDF Array parameter input format
 ---------------------------------------------
 
-It may be useful to structure certain array input (e.g. RECHARGE) as
-fully gridded, when possible, for the additional purpose of reading and
+Array based (READASARRAYS) input parameters (e.g. RECHARGE) are expected to
+be fully gridded, when possible, for the additional purpose of reading and
 visualizing the NetCDF file with external tools.
 
 A simple example from example test_gwf_rch03 is shown here:
