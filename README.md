@@ -48,22 +48,12 @@ files.  They can be used to describe additional properties of data or
 relationships between data.  They also provide scope when a single file
 supports multiple conventions.
 
-The example file structures are completely flat and contain some unnecesary
-reduncancy. The primary purpose of this review is to consider how runtime
-data is stored and retrieved, although any feedback on the organization
-of the variables is welcome as well.  Although a simple structure is the
-current goal, as it is thought to offer the best opportunity to integrate
-with other software that read NetCDF inputs, some improvements are likely to
-be made.  For example, an approach that aggregates block parameters in a
-container variable is described
-[here](https://github.com/mjreno/modflow6-nc-demo/discussions/3).
-
 Attributes are the primary mechanism enabling Model input to be correctly
 read by MODFLOW 6. It is proposed that a well described set of file and
 variable scoped attributes be defined to support this effort.  The names
 and purposes described here are open for discussion. A common prefix for
 all MODFLOW 6 NetCDF4 attributes is probably useful, and in these examples
-the prefix "modflow6_" is used.  It is intended that the MODFLOW 6 NetCDF
+the prefix "mf6_" is used.  It is intended that the MODFLOW 6 NetCDF
 supported attribute set can be extended as appropriate.
 
 ### Global attributes
@@ -73,8 +63,8 @@ use appropriate variable attributes.
 
 | Attribute             |           Meaning             |     Example(s)         |
 |-----------------------|-------------------------------|------------------------|
-| modflow6_modeltype    | Type of MODFLOW 6 Model       | GWF6, GWT6             |
-| modflow6_modelname    | Name of MODFLOW 6 Model       | "RCH", "MYMODEL"       |
+| mf6_modeltype    | Type of MODFLOW 6 Model       | GWF6, GWT6             |
+| mf6_modelname    | Name of MODFLOW 6 Model       | "RCH", "MYMODEL"       |
 
 ### Variable attributes
 
@@ -83,13 +73,10 @@ processing.
 
 | Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
-| modflow6_component    | Variable component string     | "GWF/CHD", "GWF/RCHA"       | Could be replaced with modflow6_ptype (package type).  Not strictly required.
-| modflow6_package      | Variable package name         | "CHD_0", "RCHA_0"           |
-| modflow6_block        | Variable dfn block name       | "OPTIONS", "PERIOD"         |
-| modflow6_param        | Variable dfn param tag        | "readasarrays", "head"      |
-| modflow6_iper         | IPER package variable, size   | modflow6_iper = 3           | IPER array size 3, described below
-| modflow6_griddata     | Griddata variable, size       | modflow6_griddata = 3       | griddata variable, param IPER is size 3
-| modflow6_param_iper   | IPER array for griddata var   | modflow6_param_iper = 1,5,8 | griddata param iper array, described below
+| mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: <FTYPE>:<COMPONENT-NAME>/<SUBCOMPONENT-NAME>/<TAG>
+| mf6_package           | IPER variable package         | "WEL-1"                     | Use with mf6_iper to designate associated package
+| mf6_iper              | IPER package variable, size   | mf6_iper = 3                | Package IPER array size 3, described below
+| mf6_griddata          | Griddata iper integer array   | mf6_griddata = 1,5,8        | dynamic griddata variable load periods
 
 
 MODFLOW 6 NetCDF iper variables
@@ -102,52 +89,48 @@ access relevant read and load variable period data at the right time.
 
 There are 2 types of IPER data. Package IPER variables apply to List based
 and Array based input.  These variables are 1d integer arrays and are identified
-with the variable attribute "modflow6_iper".  The name of this special variable
+with the variable attribute "mf6_iper".  The name of this special variable
 is not meaningful to MODFLOW 6.  The type of this attribute is a scalar that
 describes the size of the 1d data array associated with the variable.  The
+"mf6_package" attribute must be paired with the "mf6_iper" attribute to
+designate the package to which the variable array data applies.  The
 following is a simple example for a CHD package instance that would have three
 period blocks defined in an ASCII input file for periods 1, 5 and 8:
 
 ```
-// variable declaration with iper attribute set to size 3
-int chd_0_iper(one) ;
-       chd_0_iper:modflow6_component = "GWF/CHD" ;
-       chd_0_iper:modflow6_package = "CHD_0" ;
-       chd_0_iper:modflow6_iper = 3LL ;
+// variable declaration with iper attribute set to size 2
+int ghb_0_iper(ghb_0_niper) ;
+        ghb_0_iper:mf6_package = "GHB_0" ;
+        ghb_0_iper:mf6_iper = 2LL ;
 
 // iper variable data
-chd_0_iper = 1, 5, 8 ;
+ghb_0_iper = 1, 4 ;
 ```
 
 Package IPER variables are also relevant for Array based input parameters,
 however there is the additional need to describe whether individual parameters
 have new data for a given period.  When READASARRAYS is read for a package
-that supports Array based input, PERIOD data variables must define two 
-additional attributes: modflow6_griddata, which defines the size of the 
-variable iper 1d array, and modflow6_param_iper, which is the 1d data array.
-With array input, the modflow6_param_iper 1d array should always be a subset
-of the package modflow6_iper 1d array.
+that supports Array based input, PERIOD data variables must define
+the additional attribute "mf6_griddata", a 1d data array that represents load
+periods for each parameter. The intent of this attribute is similar to that of
+the "mf6_iper" variable, and the mf6_griddata 1d array should always be a subset
+of the package mf6_iper 1d array.
 
 An example:
 ```
 // variable definition with iper attribute set to size 3
-int rcha_0_iper(three) ;
-        rcha_0_iper:modflow6_component = "GWF/RCHA_0" ;
-        rcha_0_iper:modflow6_package = "RCHA_0" ;
-        rcha_0_iper:modflow6_iper = 3LL ;
+int rcha_0_iper(rcha_0_niper) ;
+        rcha_0_iper:mf6_package = "RCHA_0" ;
+        rcha_0_iper:mf6_iper = 3LL ;
 
 // iper variable data
 rcha_0_iper = 1, 5, 8 ;
 
-// recharge declaration with griddata set to size 2
-// and param_iper attribute containing the data
-double rcha_0_recharge_griddata(three, nlay, nrow, ncol) ;
-        rcha_0_recharge_griddata:modflow6_component = "GWF/RCHA" ;
-        rcha_0_recharge_griddata:modflow6_package = "RCHA_0" ;
-        rcha_0_recharge_griddata:modflow6_block = "PERIOD" ;
-        rcha_0_recharge_griddata:modflow6_param = "recharge" ;
-        rcha_0_recharge_griddata:modflow6_griddata = 2LL ;
-        rcha_0_recharge_griddata:modflow6_param_iper = 1LL, 8LL ;
+// recharge declaration with griddata of size 2 as subset of package mf6_iper array
+double rcha_0_recharge_griddata(rcha_0_niper, nlay, nrow, ncol) ;
+        rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
+        rcha_0_recharge_griddata:mf6_input = "RCHA6:CSUB_SUB03A/RCHA_0/RECHARGE" ;
+        rcha_0_recharge_griddata:mf6_griddata = 1LL, 8LL ;
 ```
 
 MODFLOW 6 NetCDF Array parameter input format
@@ -160,40 +143,27 @@ visualizing the NetCDF file with external tools.
 A simple example from example test_gwf_rch03 is shown here:
 ```
 // declaration
-double rcha_0_recharge_griddata(one, nlay, nrow, ncol) ;
-        rcha_0_recharge_griddata:modflow6_component = "GWF/RCHA" ;
-        rcha_0_recharge_griddata:modflow6_package = "RCHA_0" ;
-        rcha_0_recharge_griddata:modflow6_block = "PERIOD" ;
-        rcha_0_recharge_griddata:modflow6_param = "recharge" ;
-        rcha_0_recharge_griddata:modflow6_griddata = 1LL ;
-        rcha_0_recharge_griddata:modflow6_param_iper = 1LL ;
+double rcha_0_recharge_griddata(rcha_0_niper, nlay, nrow, ncol) ;
+        rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
+        rcha_0_recharge_griddata:mf6_input = "RCHA6:RCH/RCHA_0/RECHARGE" ;
+        rcha_0_recharge_griddata:mf6_griddata = 1LL ;
 
 // data
 rcha_0_recharge_griddata =
-  3e+30, 2, 3, 4, 5,
-  6, 3e+30, 8, 3e+30, 10,
-  11, 3e+30, 13, 3e+30, 15,
-  16, 17, 18, 19, 20,
-  1, 3e+30, 3e+30, 3e+30, 3e+30,
-  3e+30, 7, 3e+30, 9, 3e+30,
-  3e+30, 12, 3e+30, 14, 3e+30,
-  3e+30, 3e+30, 3e+30, 3e+30, 3e+30 ;
+ _, 2, 3, 4, 5,
+ 6, _, 8, _, 10,
+ 11, _, 13, _, 15,
+ 16, 17, 18, 19, 20,
+ 1, _, _, _, _,
+ _, 7, _, 9, _,
+ _, 12, _, 14, _,
+ _, _, _, _, _ ;
 ```
 
-This example defines a grid with 1 nper, 2 layers, 4 rows and 5 columns.
+This example defines a single load period with a grid of 2 layers, 4 rows and 5 columns.
 
 The data shows that DNODATA is used as a FillValue for cells
 with no data.  IRCH is not explicitly required (and is not
 in the example netcdf file) as it can be inferred from the
 griddata.  It's inclusion may simplify processing, however, and
-ultimately it may be required.  (Note: If the attribute \_FillValue
-had been defined for the variable (as should typically be the case)
-then the ncdump output for this data would show underscores for the
-DNODATA values.)
-
-It should also be noted that index order for multi-dimensional data
-intended for visualization is likely important and could change
-from what is seen in the examples.
-
-
-
+ultimately it may be required.
