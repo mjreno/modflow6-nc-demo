@@ -14,7 +14,8 @@ from enum import Enum
 from pathlib import Path
 
 LENBOUNDNAME = 40 # maximum length of a bound name
-LENINPUTSTR = 300
+LINELENGTH = 300
+LENAUXNAME = 16
 DNODATA = 0.3000000000E+31
 INODATA = -2147483647
 
@@ -80,7 +81,7 @@ class Mf6NetCDFSim:
 
             if tdis:
                 #self._write_tdis(tdis)
-                self._nc.create_dim('nper', tdis.nper.data)
+                self._nc.create_dim('NPER', tdis.nper.data)
                 self._nper = tdis.nper.data
 
             # package data
@@ -102,17 +103,17 @@ class Mf6NetCDFSim:
 
         self._nper = tdis.nper.data
 
-        time_units = tdis.time_units.data.ljust(LENINPUTSTR)
+        time_units = tdis.time_units.data.ljust(LINELENGTH)
 
         self._nc.create_dim('nper', tdis.nper.data)
         self._nc.add_input_var(self._compstr, 'tdis', 'tdis', 'options', 'time_units',
-                               time_units, 'S1', ('lencharstr'))
+                               time_units, 'S1', ('LINELENGTH'))
         self._nc.add_input_var(self._compstr, 'tdis', 'tdis', 'perioddata', 'perlen',
-                               perlen, np.float64, ('nper'))
+                               perlen, np.float64, ('NPER'))
         self._nc.add_input_var(self._compstr, 'tdis', 'tdis', 'perioddata', 'nstp',
-                               nstp, np.int32, ('nper'))
+                               nstp, np.int32, ('NPER'))
         self._nc.add_input_var(self._compstr, 'tdis', 'tdis', 'perioddata', 'tsmult',
-                               tsmult, np.float64, ('nper'))
+                               tsmult, np.float64, ('NPER'))
 
     def _write_package(self, model, pkg):
         #print(dir(self._sim.get_model(model).get_package(pkg)))
@@ -135,17 +136,17 @@ class Mf6NetCDFSim:
             self._distype = Mf6DisType.DIS
             self._nodes = self._nlay * self._nrow * self._ncol
             self._ncpl = self._nrow * self._ncol
-            self._nc.create_dim('nodes', self._nodes)
-            self._nc.create_dim('ncpl', self._ncpl)
-            self._nc.create_dim('ncelldim', 3)
+            #self._nc.create_dim('NODES', self._nodes)
+            self._nc.create_dim('NCPL', self._ncpl)
+            self._nc.create_dim('NCELLDIM', 3)
         elif package_type == 'disu':
             self._distype = Mf6DisType.DISU
-            self._nc.create_dim('ncelldim', 1)
+            self._nc.create_dim('NCELLDIM', 1)
         elif package_type == 'disv':
             self._distype = Mf6DisType.DISV
             self._nodes = self._nlay * self._ncpl
-            self._nc.create_dim('nodes', self._nodes)
-            self._nc.create_dim('ncelldim', 2)
+            #self._nc.create_dim('NODES', self._nodes)
+            self._nc.create_dim('NCELLDIM', 2)
 
         if hasattr(self._sim.get_model(model).get_package(pkg), "stress_period_data"):
             if self._sim.get_model(model).get_package(pkg).stress_period_data.has_data():
@@ -224,7 +225,8 @@ class Mf6NetCDFSim:
         dtype = v[1].dtype
 
         if '_filerecord' in varname:
-            fname = v[1].get_data()[0][0].ljust(LENINPUTSTR)
+            print(f"RENO _write_mflist {varname}")
+            fname = v[1].get_data()[0][0].ljust(LINELENGTH)
 
             if v[0][3] == "afrcsv_filerecord":
                 keyword = "afrcsvfile"
@@ -234,8 +236,9 @@ class Mf6NetCDFSim:
                 sys.stderr.write(f'UNHANDLED MFList IOTAG for filerecord: {v[0][3]}\n')
                 sys.exit(1)
 
+            #self._nc.add_input_var(self._compstr, package_type, package_name, blockname, keyword,
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname, v[0][3],
-                                   fname, 'S1', ('lencharstr'))
+                                   fname, 'S1', ('LINELENGTH'))
         elif varname == 'vertices':
             #NOTE iv is 0 based, others arent
             iv = [x[0]+1 for x in data]
@@ -243,11 +246,11 @@ class Mf6NetCDFSim:
             yv = [x[2] for x in data]
 
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                   'IV', iv, np.int32, ('nvert'))
+                                   'IV', iv, np.int32, ('NVERT'))
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                   'XV', xv, np.float64, ('nvert'))
+                                   'XV', xv, np.float64, ('NVERT'))
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                   'YV', yv, np.float64, ('nvert'))
+                                   'YV', yv, np.float64, ('NVERT'))
         elif varname == 'cell2d':
             icell2d = [x[0] + 1 for x in data]
             xc = [x[1] for x in data]
@@ -278,12 +281,12 @@ class Mf6NetCDFSim:
                                    'ICVERT', icvert, np.int32, (vdim))
         elif varname == 'auxiliary':
             # TODO: incoming could be string (like this) or list of strings, handle both
-            s = data[0][1].ljust(LENINPUTSTR)
+            s = data[0][1].ljust(LINELENGTH)
             aux_l = data[0][1].split(',')
             # TODO: naux isn't in ascii input
             self._nc.create_dim(f"{package_name}_naux", len(aux_l))
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                   'AUXILIARY', s, 'S1', (f"{package_name}_naux", 'lencharstr'))
+                                   'AUXILIARY', s, 'S1', (f"{package_name}_naux", 'LENAUXNAME'))
 
         else:
             sys.stderr.write(f'UNHANDLED _write_mflist: {varname}\n')
@@ -299,13 +302,13 @@ class Mf6NetCDFSim:
         if 'nodes' in shape:
             if self._distype == Mf6DisType.DIS:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data, dtype, ('nlay','nrow','ncol'))
+                                       varname, data, dtype, ('NLAY','NROW','NCOL'))
             elif self._distype == Mf6DisType.DISU:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data, dtype, ('nodes'))
+                                       varname, data, dtype, ('NODES'))
             elif self._distype == Mf6DisType.DISV:    
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data, dtype, ('nlay','ncpl'))
+                                       varname, data, dtype, ('NLAY','NCPL'))
             else:
                 sys.stderr.write(f'Attempting to write griddata when distype not set\n')
                 sys.exit(1)
@@ -313,7 +316,8 @@ class Mf6NetCDFSim:
             dims = re.sub(r'[(),]', '', dfn[3].replace('shape ', ''))
             dimlist = dims.split()
             ordered = ['nlay', 'nrow', 'ncpl', 'ncol', 'nodes', 'nvert']
-            sorted_dims = [x for x in ordered if x in dimlist]
+            sorted_dims = [x.upper() for x in ordered if x in dimlist]
+            print(f"RENO {sorted_dims}")
             if len(sorted_dims) != len(dimlist):
                 sys.stderr.write(f'Invalid shape sort\n')
                 #print(sorted_dims)
@@ -341,13 +345,13 @@ class Mf6NetCDFSim:
         if 'nodes' in shape:
             if self._distype == Mf6DisType.DIS:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data.reshape(self._nodes), dtype, ('nodes'))
+                                       varname, data.reshape(self._nodes), dtype, ('NODES'))
             elif self._distype == Mf6DisType.DISU:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data, dtype, ('nodes'))
+                                       varname, data, dtype, ('NODES'))
             elif self._distype == Mf6DisType.DISV:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, data, dtype, ('nodes'))
+                                       varname, data, dtype, ('NODES'))
             else:
                 sys.stderr.write(f'Attempting to write griddata when distype not set\n')
                 sys.exit(1)
@@ -355,7 +359,7 @@ class Mf6NetCDFSim:
             dims = re.sub(r'[(),]', '', dfn[3].replace('shape ', ''))
             dimlist = dims.split()
             ordered = ['nlay', 'nrow', 'ncpl', 'ncol', 'nodes', 'nvert']
-            sorted_dims = [x for x in ordered if x in dimlist]
+            sorted_dims = [x.upper() for x in ordered if x in dimlist]
             load_d = np.array([[]])
             last_d = np.array([])
             if len(sorted_dims) != len(dimlist):
@@ -415,10 +419,13 @@ class Mf6NetCDFSim:
                 self._nc.create_dim(pdim, len(iper_l))
 
                 # create and set mf6_iper for package
-                per = self._nc._dataset.createVariable(f"{package_name.lower()}_iper", np.int32,
-                                                   (pdim))
-                per.mf6_package = package_name.upper()
-                per.mf6_iper = len(iper_l)
+                #per = self._nc._dataset.createVariable(f"{package_name.lower()}_iper", np.int32,
+                #                                   (pdim))
+                #per.mf6_package = package_name.upper()
+                #per.mf6_iper = len(iper_l)
+                #per[:] = [x for x in iper_l]
+                per = self._nc.create_var(self._compstr, package_type, package_name, 'PERIOD',
+                                          'iper', np.int32, f"{package_name}_niper")
                 per[:] = [x for x in iper_l]
 
                 # only write griddata if DIS
@@ -434,12 +441,12 @@ class Mf6NetCDFSim:
                                 rch[idx][l,r,c] = load_d[k-1][c + r * self._ncol]
 
                     self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                           varname, rch, dtype, [pdim, 'nlay', 'nrow', 'ncol'], True, iper_l)
+                                           varname, rch, dtype, [pdim, 'NLAY', 'NROW', 'NCOL'], True, iper_l)
 
 
             if do_load:
                 self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
-                                       varname, load_d, dtype, ['nper', 'ncpl'])
+                                       varname, load_d, dtype, ['NPER', 'NCPL'])
 
 
     def _write_mfscalar(self, model, package_name, package_type, v, dfn):
@@ -453,7 +460,7 @@ class Mf6NetCDFSim:
             elif blockname == 'dimensions':
                 if package_type == 'dis' or package_type == 'disu' or package_type == 'disv':
                     self._set_dis_dim(model, package_name, package_type, v, dfn)
-                    self._nc.create_dim(f'{varname}', data)
+                    self._nc.create_dim(f'{varname.upper()}', data)
                 else:
                     #self._nc.create_dim(f'{package_name}_{varname}', data)
                     print(f'creating dim {varname} at {data}')
@@ -516,7 +523,9 @@ class Mf6NetCDFModel:
         #self._dataset.coordinates = "longitude latitude"
 
         self._dataset.set_fill_on()
-        self.create_dim('lencharstr', LENINPUTSTR)
+        self.create_dim('LINELENGTH', LINELENGTH)
+        self.create_dim('LENAUXNAME', LENAUXNAME)
+        self.create_dim('LENBOUNDNAME', LENBOUNDNAME)
 
     def close(self):
         self._dataset.close()
@@ -529,7 +538,7 @@ class Mf6NetCDFModel:
     def add_input_var(self, component, pkgtype, pkgname, blockname, varname, data, dtype, shape, griddata=None, iper_l=None):
         if varname == 'top':
             if pkgtype.upper() == 'DIS':
-                shape = ['nrow', 'ncol']
+                shape = ['NROW', 'NCOL']
             #elif pkgtype.upper() == 'DISV':
             #    shape = ['ncpl']
         if griddata:
@@ -544,6 +553,7 @@ class Mf6NetCDFModel:
                 fill = DNODATA
             elif (dtype == np.int32):
                 fill = INODATA
+            print(f"RENO add_input_var shape={shape}")
             grpvar = self._dataset.createVariable(aname, dtype, shape, fill_value=fill)
 
         if dtype == 'S1':
@@ -557,7 +567,7 @@ class Mf6NetCDFModel:
     def create_var(self, component, pkgtype, pkgname, blockname, varname, dtype, shape, fill=None):
         print(f'adding pkg={pkgname} var={varname} block={blockname} shape={shape}')
         if varname == 'top':
-            shape = ['nrow', 'ncol']
+            shape = ['NROW', 'NCOL']
         aname = f"{pkgname.lower()}_{varname.lower()}"
         if shape == '':
             grpvar = self._dataset.createVariable(aname, dtype, fill_value=fill)
@@ -599,10 +609,13 @@ class Mf6NetCDFModel:
         self.create_dim(pdim, len(iper_l))
 
         # create and set mf6_iper for package
-        per = self._dataset.createVariable(f"{pkgname.lower()}_iper", np.int32,
-                                           (pdim))
-        per.mf6_package = pkgname.upper()
-        per.mf6_iper = len(iper_l)
+        #per = self._dataset.createVariable(f"{pkgname.lower()}_iper", np.int32,
+        #                                   (pdim))
+        #per.mf6_package = pkgname.upper()
+        #per.mf6_iper = len(iper_l)
+        #per[:] = [x+1 for x in iper_l]
+        per = self.create_var(component, pkgtype, pkgname, 'PERIOD',
+                              'iper', np.int32, f"{pkgname}_niper")
         per[:] = [x+1 for x in iper_l]
 
         # create vars
@@ -613,12 +626,12 @@ class Mf6NetCDFModel:
             if f in auxvar:
                 continue
             elif f == 'cellid':
-                shape = (f"{pkgname}_niper", f"{pkgname}_maxbound", "ncelldim")
+                shape = (f"{pkgname}_niper", f"{pkgname}_maxbound", "NCELLDIM")
                 cellid = self.create_var(component, pkgtype, pkgname, 'PERIOD',
                                          'cellid', np.int32, shape, INODATA)
             elif f == 'boundname':
-                self.create_dim('lenboundname', LENBOUNDNAME)
-                shape = (f"{pkgname}_niper", f"{pkgname}_maxbound", "lenboundname")
+                #self.create_dim('lenboundname', LENBOUNDNAME)
+                shape = (f"{pkgname}_niper", f"{pkgname}_maxbound", "LENBOUNDNAME")
                 boundname = self.create_var(component, pkgtype, pkgname, 'PERIOD',
                                             'boundname', 'S1', shape)
             elif f == 'head':

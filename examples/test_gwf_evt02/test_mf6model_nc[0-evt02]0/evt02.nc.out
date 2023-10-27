@@ -1,13 +1,14 @@
 netcdf evt02 {
 dimensions:
-	lencharstr = 300 ;
-	nper = 50 ;
-	nlay = 1 ;
-	nrow = 1 ;
-	ncol = 3 ;
-	nodes = 3 ;
-	ncpl = 3 ;
-	ncelldim = 3 ;
+	LINELENGTH = 300 ;
+	LENAUXNAME = 16 ;
+	LENBOUNDNAME = 40 ;
+	NPER = 50 ;
+	NLAY = 1 ;
+	NROW = 1 ;
+	NCOL = 3 ;
+	NCPL = 3 ;
+	NCELLDIM = 3 ;
 	chd_0_maxbound = 2 ;
 	chd_0_niper = 50 ;
 	evt_0_maxbound = 1 ;
@@ -20,32 +21,31 @@ variables:
 		dis_nrow:mf6_input = "DIS6:EVT02/DIS/NROW" ;
 	int dis_ncol ;
 		dis_ncol:mf6_input = "DIS6:EVT02/DIS/NCOL" ;
-	double dis_delr(ncol) ;
+	double dis_delr(NCOL) ;
 		dis_delr:_FillValue = 3.e+30 ;
 		dis_delr:mf6_input = "DIS6:EVT02/DIS/DELR" ;
-	double dis_delc(nrow) ;
+	double dis_delc(NROW) ;
 		dis_delc:_FillValue = 3.e+30 ;
 		dis_delc:mf6_input = "DIS6:EVT02/DIS/DELC" ;
-	double dis_top(nrow, ncol) ;
+	double dis_top(NROW, NCOL) ;
 		dis_top:_FillValue = 3.e+30 ;
 		dis_top:mf6_input = "DIS6:EVT02/DIS/TOP" ;
-	double dis_botm(nlay, nrow, ncol) ;
+	double dis_botm(NLAY, NROW, NCOL) ;
 		dis_botm:_FillValue = 3.e+30 ;
 		dis_botm:mf6_input = "DIS6:EVT02/DIS/BOTM" ;
 	int npf_save_flows ;
 		npf_save_flows:mf6_input = "NPF6:EVT02/NPF/SAVE_FLOWS" ;
-	int npf_icelltype(nlay, nrow, ncol) ;
+	int npf_icelltype(NLAY, NROW, NCOL) ;
 		npf_icelltype:_FillValue = -2147483647 ;
 		npf_icelltype:mf6_input = "NPF6:EVT02/NPF/ICELLTYPE" ;
-	double npf_k(nlay, nrow, ncol) ;
+	double npf_k(NLAY, NROW, NCOL) ;
 		npf_k:_FillValue = 3.e+30 ;
 		npf_k:mf6_input = "NPF6:EVT02/NPF/K" ;
 	int chd_0_maxbound ;
 		chd_0_maxbound:mf6_input = "CHD6:EVT02/CHD_0/MAXBOUND" ;
 	int chd_0_iper(chd_0_niper) ;
-		chd_0_iper:mf6_package = "CHD_0" ;
-		chd_0_iper:mf6_iper = 50LL ;
-	int chd_0_cellid(chd_0_niper, chd_0_maxbound, ncelldim) ;
+		chd_0_iper:mf6_input = "CHD6:EVT02/CHD_0/IPER" ;
+	int chd_0_cellid(chd_0_niper, chd_0_maxbound, NCELLDIM) ;
 		chd_0_cellid:_FillValue = -2147483647 ;
 		chd_0_cellid:mf6_input = "CHD6:EVT02/CHD_0/CELLID" ;
 	double chd_0_head(chd_0_niper, chd_0_maxbound) ;
@@ -60,9 +60,8 @@ variables:
 	int evt_0_nseg ;
 		evt_0_nseg:mf6_input = "EVT6:EVT02/EVT_0/NSEG" ;
 	int evt_0_iper(evt_0_niper) ;
-		evt_0_iper:mf6_package = "EVT_0" ;
-		evt_0_iper:mf6_iper = 1LL ;
-	int evt_0_cellid(evt_0_niper, evt_0_maxbound, ncelldim) ;
+		evt_0_iper:mf6_input = "EVT6:EVT02/EVT_0/IPER" ;
+	int evt_0_cellid(evt_0_niper, evt_0_maxbound, NCELLDIM) ;
 		evt_0_cellid:_FillValue = -2147483647 ;
 		evt_0_cellid:mf6_input = "EVT6:EVT02/EVT_0/CELLID" ;
 	double evt_0_surface(evt_0_niper, evt_0_maxbound) ;
@@ -80,7 +79,7 @@ variables:
 
 // global attributes:
 		:description = "MODFLOW 6 NetCDF4 file prototype" ;
-		:history = "Created Thu Oct 26 08:50:14 2023" ;
+		:history = "Created Fri Oct 27 12:44:50 2023" ;
 		:source = "mf6netcdf4.py" ;
 		:mf6_modeltype = "GWF6" ;
 		:mf6_modelname = "EVT02" ;

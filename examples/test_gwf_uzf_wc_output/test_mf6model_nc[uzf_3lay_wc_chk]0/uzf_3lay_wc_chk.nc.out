@@ -1,13 +1,14 @@
 netcdf uzf_3lay_wc_chk {
 dimensions:
-	lencharstr = 300 ;
-	nper = 6 ;
-	nlay = 3 ;
-	nrow = 1 ;
-	ncol = 10 ;
-	nodes = 30 ;
-	ncpl = 10 ;
-	ncelldim = 3 ;
+	LINELENGTH = 300 ;
+	LENAUXNAME = 16 ;
+	LENBOUNDNAME = 40 ;
+	NPER = 6 ;
+	NLAY = 3 ;
+	NROW = 1 ;
+	NCOL = 10 ;
+	NCPL = 10 ;
+	NCELLDIM = 3 ;
 	ghb_0_maxbound = 3 ;
 	ghb_0_niper = 2 ;
 variables:
@@ -17,27 +18,27 @@ variables:
 		dis_nrow:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/NROW" ;
 	int dis_ncol ;
 		dis_ncol:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/NCOL" ;
-	double dis_delr(ncol) ;
+	double dis_delr(NCOL) ;
 		dis_delr:_FillValue = 3.e+30 ;
 		dis_delr:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/DELR" ;
-	double dis_delc(nrow) ;
+	double dis_delc(NROW) ;
 		dis_delc:_FillValue = 3.e+30 ;
 		dis_delc:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/DELC" ;
-	double dis_top(nrow, ncol) ;
+	double dis_top(NROW, NCOL) ;
 		dis_top:_FillValue = 3.e+30 ;
 		dis_top:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/TOP" ;
-	double dis_botm(nlay, nrow, ncol) ;
+	double dis_botm(NLAY, NROW, NCOL) ;
 		dis_botm:_FillValue = 3.e+30 ;
 		dis_botm:mf6_input = "DIS6:UZF_3LAY_WC_CHK/DIS/BOTM" ;
 	int npf_save_flows ;
 		npf_save_flows:mf6_input = "NPF6:UZF_3LAY_WC_CHK/NPF/SAVE_FLOWS" ;
-	int npf_icelltype(nlay, nrow, ncol) ;
+	int npf_icelltype(NLAY, NROW, NCOL) ;
 		npf_icelltype:_FillValue = -2147483647 ;
 		npf_icelltype:mf6_input = "NPF6:UZF_3LAY_WC_CHK/NPF/ICELLTYPE" ;
-	double npf_k(nlay, nrow, ncol) ;
+	double npf_k(NLAY, NROW, NCOL) ;
 		npf_k:_FillValue = 3.e+30 ;
 		npf_k:mf6_input = "NPF6:UZF_3LAY_WC_CHK/NPF/K" ;
-	double npf_k33(nlay, nrow, ncol) ;
+	double npf_k33(NLAY, NROW, NCOL) ;
 		npf_k33:_FillValue = 3.e+30 ;
 		npf_k33:mf6_input = "NPF6:UZF_3LAY_WC_CHK/NPF/K33" ;
 	int ghb_0_print_flows ;
@@ -45,9 +46,8 @@ variables:
 	int ghb_0_maxbound ;
 		ghb_0_maxbound:mf6_input = "GHB6:UZF_3LAY_WC_CHK/GHB_0/MAXBOUND" ;
 	int ghb_0_iper(ghb_0_niper) ;
-		ghb_0_iper:mf6_package = "GHB_0" ;
-		ghb_0_iper:mf6_iper = 2LL ;
-	int ghb_0_cellid(ghb_0_niper, ghb_0_maxbound, ncelldim) ;
+		ghb_0_iper:mf6_input = "GHB6:UZF_3LAY_WC_CHK/GHB_0/IPER" ;
+	int ghb_0_cellid(ghb_0_niper, ghb_0_maxbound, NCELLDIM) ;
 		ghb_0_cellid:_FillValue = -2147483647 ;
 		ghb_0_cellid:mf6_input = "GHB6:UZF_3LAY_WC_CHK/GHB_0/CELLID" ;
 	double ghb_0_bhead(ghb_0_niper, ghb_0_maxbound) ;
@@ -59,7 +59,7 @@ variables:
 
 // global attributes:
 		:description = "MODFLOW 6 NetCDF4 file prototype" ;
-		:history = "Created Thu Oct 26 08:54:49 2023" ;
+		:history = "Created Fri Oct 27 12:48:39 2023" ;
 		:source = "mf6netcdf4.py" ;
 		:mf6_modeltype = "GWF6" ;
 		:mf6_modelname = "UZF_3LAY_WC_CHK" ;

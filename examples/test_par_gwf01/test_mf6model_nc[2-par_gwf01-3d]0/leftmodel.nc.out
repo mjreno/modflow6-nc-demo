@@ -1,13 +1,14 @@
 netcdf leftmodel {
 dimensions:
-	lencharstr = 300 ;
-	nper = 1 ;
-	nlay = 5 ;
-	nrow = 5 ;
-	ncol = 5 ;
-	nodes = 125 ;
-	ncpl = 25 ;
-	ncelldim = 3 ;
+	LINELENGTH = 300 ;
+	LENAUXNAME = 16 ;
+	LENBOUNDNAME = 40 ;
+	NPER = 1 ;
+	NLAY = 5 ;
+	NROW = 5 ;
+	NCOL = 5 ;
+	NCPL = 25 ;
+	NCELLDIM = 3 ;
 	chd_0_maxbound = 25 ;
 	chd_0_niper = 1 ;
 variables:
@@ -17,34 +18,33 @@ variables:
 		dis_nrow:mf6_input = "DIS6:LEFTMODEL/DIS/NROW" ;
 	int dis_ncol ;
 		dis_ncol:mf6_input = "DIS6:LEFTMODEL/DIS/NCOL" ;
-	double dis_delr(ncol) ;
+	double dis_delr(NCOL) ;
 		dis_delr:_FillValue = 3.e+30 ;
 		dis_delr:mf6_input = "DIS6:LEFTMODEL/DIS/DELR" ;
-	double dis_delc(nrow) ;
+	double dis_delc(NROW) ;
 		dis_delc:_FillValue = 3.e+30 ;
 		dis_delc:mf6_input = "DIS6:LEFTMODEL/DIS/DELC" ;
-	double dis_top(nrow, ncol) ;
+	double dis_top(NROW, NCOL) ;
 		dis_top:_FillValue = 3.e+30 ;
 		dis_top:mf6_input = "DIS6:LEFTMODEL/DIS/TOP" ;
-	double dis_botm(nlay, nrow, ncol) ;
+	double dis_botm(NLAY, NROW, NCOL) ;
 		dis_botm:_FillValue = 3.e+30 ;
 		dis_botm:mf6_input = "DIS6:LEFTMODEL/DIS/BOTM" ;
 	int npf_save_flows ;
 		npf_save_flows:mf6_input = "NPF6:LEFTMODEL/NPF/SAVE_FLOWS" ;
 	int npf_save_specific_discharge ;
 		npf_save_specific_discharge:mf6_input = "NPF6:LEFTMODEL/NPF/SAVE_SPECIFIC_DISCHARGE" ;
-	int npf_icelltype(nlay, nrow, ncol) ;
+	int npf_icelltype(NLAY, NROW, NCOL) ;
 		npf_icelltype:_FillValue = -2147483647 ;
 		npf_icelltype:mf6_input = "NPF6:LEFTMODEL/NPF/ICELLTYPE" ;
-	double npf_k(nlay, nrow, ncol) ;
+	double npf_k(NLAY, NROW, NCOL) ;
 		npf_k:_FillValue = 3.e+30 ;
 		npf_k:mf6_input = "NPF6:LEFTMODEL/NPF/K" ;
 	int chd_0_maxbound ;
 		chd_0_maxbound:mf6_input = "CHD6:LEFTMODEL/CHD_0/MAXBOUND" ;
 	int chd_0_iper(chd_0_niper) ;
-		chd_0_iper:mf6_package = "CHD_0" ;
-		chd_0_iper:mf6_iper = 1LL ;
-	int chd_0_cellid(chd_0_niper, chd_0_maxbound, ncelldim) ;
+		chd_0_iper:mf6_input = "CHD6:LEFTMODEL/CHD_0/IPER" ;
+	int chd_0_cellid(chd_0_niper, chd_0_maxbound, NCELLDIM) ;
 		chd_0_cellid:_FillValue = -2147483647 ;
 		chd_0_cellid:mf6_input = "CHD6:LEFTMODEL/CHD_0/CELLID" ;
 	double chd_0_head(chd_0_niper, chd_0_maxbound) ;
@@ -53,7 +53,7 @@ variables:
 
 // global attributes:
 		:description = "MODFLOW 6 NetCDF4 file prototype" ;
-		:history = "Created Thu Oct 26 10:52:00 2023" ;
+		:history = "Created Fri Oct 27 12:52:12 2023" ;
 		:source = "mf6netcdf4.py" ;
 		:mf6_modeltype = "GWF6" ;
 		:mf6_modelname = "LEFTMODEL" ;

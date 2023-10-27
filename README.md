@@ -49,12 +49,8 @@ relationships between data.  They also provide scope when a single file
 supports multiple conventions.
 
 Attributes are the primary mechanism enabling Model input to be correctly
-read by MODFLOW 6. It is proposed that a well described set of file and
-variable scoped attributes be defined to support this effort.  The names
-and purposes described here are open for discussion. A common prefix for
-all MODFLOW 6 NetCDF4 attributes is probably useful, and in these examples
-the prefix "mf6_" is used.  It is intended that the MODFLOW 6 NetCDF
-supported attribute set can be extended as appropriate.
+read by MODFLOW 6. It is intended that the MODFLOW 6 NetCDF supported
+attribute set can be extended as appropriate.
 
 ### Global attributes
 
@@ -74,60 +70,90 @@ processing.
 | Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
 | mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: [PKGTYPE]:[COMPONENT-NAME]/[SUBCOMPONENT-NAME]/[PARAM-TAG]
-| mf6_package           | IPER variable package         | "WEL-1"                     | Use with mf6_iper to designate associated package
-| mf6_iper              | IPER package variable, size   | mf6_iper = 3                | Package IPER array size 3, described below
 | mf6_griddata          | Griddata iper integer array   | mf6_griddata = 1,5,8        | dynamic griddata variable load periods
 
 
-MODFLOW 6 NetCDF iper variables
--------------------------------
+Input Processing
+----------------
+With the following exceptions, mf6_input parameter tags have a direct correspondence
+to dfn file block parameter names.  The input associated with the following tag or tag
+classes is handled differently when compared to ASCII inputs and is described here:
 
+### IPER
 The intent of iper variable is to reduce the amount of data written to the
 NetCDF file.  IPER arrays provide a list of integers that are analogous to
 ASCII input period block variables. The indexes of IPER arrays are used to
 access relevant read and load variable period data at the right time.
 
-There are 2 types of IPER data. Package IPER variables apply to List based
-and Array based input.  These variables are 1d integer arrays and are identified
-with the variable attribute "mf6_iper".  The name of this special variable
-is not meaningful to MODFLOW 6.  The type of this attribute is a scalar that
-describes the size of the 1d data array associated with the variable.  The
-"mf6_package" attribute must be paired with the "mf6_iper" attribute to
-designate the package to which the variable array data applies.  The
-following is a simple example for a CHD package instance that would have three
-period blocks defined in an ASCII input file for periods 1, 5 and 8:
+An IPER variable is required per packge (List and Array based input) but the
+associated data is not allocated in the memory manager- it is used internally
+to determine when input loaders are to be run:
 
 ```
-// variable declaration with iper attribute set to size 2
+// variable declaration of package iper
 int ghb_0_iper(ghb_0_niper) ;
-        ghb_0_iper:mf6_package = "GHB_0" ;
-        ghb_0_iper:mf6_iper = 2LL ;
+        ghb_0_iper:mf6_input = "GHB6:UZF_3LAY_WC_CHK/GHB_0/IPER" ;
 
 // iper variable data
 ghb_0_iper = 1, 4 ;
 ```
 
-Package IPER variables are also relevant for Array based input parameters,
-however there is the additional need to describe whether individual parameters
-have new data for a given period.  When READASARRAYS is read for a package
-that supports Array based input, PERIOD data variables must define
-the additional attribute "mf6_griddata", a 1d data array that represents load
-periods for the parameter. The intent of this attribute is similar to that of
-the "mf6_iper" variable, and the mf6_griddata 1d array should always be a subset
-of the package mf6_iper 1d array.
+### \*\_FILERECORD
+These tags are associated with a record that defines an input
+or output file specification.  In a NetCDF input file, these tags are associated
+with character arrays with a dimension of "LINELENGTH" which is set to the file
+specification:
+
+```
+// declaration
+char chd-1_obs_filerecord(LINELENGTH) ;
+        chd-1_obs_filerecord:_Encoding = "ascii" ;
+        chd-1_obs_filerecord:mf6_input = "CHD6:GWF_BNDNAME01/CHD-1/OBS_FILERECORD" ;
+
+// data
+chd-1_obs_filerecord = "gwf_bndname01.chd.obs                                                                                                                                                                                                                                                                                       " ;
+
+```
+
+These tags are then processed in accordance with the definition and allocated in the
+memory manager at the path associated with the 4th token in the RECORD defintion.  For
+the case above, the "OBS_FILERECORD" definition is "RECORD OBS6 FILEIN OBS6_FILENAME"
+and the variable name of the memory address for the loaded string is "OBS6_FILENAME".
+
+### AUXILIARY
+AUXILIARY inputs are 1D character arrays of size (naux, LENAUXNAME), for example:
+
+```
+// declaration
+char wel-1_auxiliary(wel-1_naux, LENAUXNAME) ;
+        wel-1_auxiliary:_Encoding = "ascii" ;
+        wel-1_auxiliary:mf6_input = "WEL6:GWF_MST03/WEL-1/AUXILIARY" ;
+
+// data (naux=1)
+wel-1_auxiliary =
+  "CONCENTRATION   " ;
+```
+
+Attribute mf6_griddata
+----------------------
+
+When READASARRAYS is read for a package that supports Array based input,
+PERIOD data variables must define the additional attribute "mf6_griddata",
+a 1d data array that represents load periods for the parameter. The intent
+of this attribute is similar to that of "IPER" variable, and the mf6_griddata
+1d array should always be a subset of the package "IPER" 1d array.
 
 An example:
 ```
-// variable definition with iper attribute set to size 3
+// declare package iper variable 
 int rcha_0_iper(rcha_0_niper) ;
-        rcha_0_iper:mf6_package = "RCHA_0" ;
-        rcha_0_iper:mf6_iper = 3LL ;
+        rcha_0_iper:mf6_input = "RCHA6:RCH/RCHA_0/IPER" ;
 
 // iper variable data
 rcha_0_iper = 1, 5, 8 ;
 
-// recharge declaration with griddata of size 2 as subset of package mf6_iper array
-double rcha_0_recharge_griddata(rcha_0_niper, nlay, nrow, ncol) ;
+// recharge declaration with mf6_griddata 1d array as subset of package IPER array
+double rcha_0_recharge_griddata(rcha_0_niper, NLAY, NROW, NCOL) ;
         rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
         rcha_0_recharge_griddata:mf6_input = "RCHA6:CSUB_SUB03A/RCHA_0/RECHARGE" ;
         rcha_0_recharge_griddata:mf6_griddata = 1LL, 8LL ;
@@ -143,7 +169,7 @@ visualizing the NetCDF file with external tools.
 A simple example from example test_gwf_rch03 is shown here:
 ```
 // declaration
-double rcha_0_recharge_griddata(rcha_0_niper, nlay, nrow, ncol) ;
+double rcha_0_recharge_griddata(rcha_0_niper, NLAY, NROW, NCOL) ;
         rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
         rcha_0_recharge_griddata:mf6_input = "RCHA6:RCH/RCHA_0/RECHARGE" ;
         rcha_0_recharge_griddata:mf6_griddata = 1LL ;
@@ -160,10 +186,6 @@ rcha_0_recharge_griddata =
  _, _, _, _, _ ;
 ```
 
-This example defines a single load period with a grid of 2 layers, 4 rows and 5 columns.
 
-The data shows that DNODATA is used as a FillValue for cells
-with no data.  IRCH is not explicitly required (and is not
-in the example netcdf file) as it can be inferred from the
-griddata.  It's inclusion may simplify processing, however, and
-ultimately it may be required.
+
+
