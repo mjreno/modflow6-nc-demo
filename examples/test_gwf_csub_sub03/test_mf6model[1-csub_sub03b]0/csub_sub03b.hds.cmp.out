@@ -1,6 +1,6 @@
 Performing HEAD to HEAD comparison
-/tmp/pytest-of-mreno/pytest-1640/test_mf6model[1-csub_sub03b]0/csub_sub03b.hds is a binary file.
-/tmp/pytest-of-mreno/pytest-1640/test_mf6model[1-csub_sub03b]0/mf6_regression/csub_sub03b.hds is a binary file.
+/tmp/pytest-of-mreno/pytest-1883/test_mf6model[1-csub_sub03b]0/csub_sub03b.hds is a binary file.
+/tmp/pytest-of-mreno/pytest-1883/test_mf6model[1-csub_sub03b]0/mf6_regression/csub_sub03b.hds is a binary file.
                                         MAXIMUM         EXCEEDS
   STRESS PERIOD       TIME STEP HEAD DIFFERENCE        CRITERIA
 --------------- --------------- --------------- ---------------

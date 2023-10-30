@@ -288,8 +288,33 @@ class Mf6NetCDFSim:
             self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
                                    'AUXILIARY', s, 'S1', (f"{package_name}_naux", 'LENAUXNAME'))
 
+        elif varname == 'rewet_record':
+            print(f"{len(data[0])}")
+            self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
+                                   'REWET', 1, np.int32, '')
+            for i in range(len(data[0])):
+                #print(data[0][i])
+                if (data[0][i]) == 'WETFCT':
+                    print(f"WETFCT={data[0][i+1]}")
+                    print(f"type={type(data[0][i+1])}")
+                    self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
+                                           data[0][i], data[0][i+1], type(data[0][i+1]), '')
+                elif (data[0][i]) == 'IWETIT':
+                    print(f"IWETIT={data[0][i+1]}")
+                    print(f"type={type(data[0][i+1])}")
+                    self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
+                                           data[0][i], data[0][i+1], type(data[0][i+1]), '')
+                elif (data[0][i]) == 'IHDWET':
+                    print(f"IHDWET={data[0][i+1]}")
+                    print(f"type={type(data[0][i+1])}")
+                    self._nc.add_input_var(self._compstr, package_type, package_name, blockname,
+                                           data[0][i], data[0][i+1], type(data[0][i+1]), '')
+            #sys.exit(1)
+
+
         else:
             sys.stderr.write(f'UNHANDLED _write_mflist: {varname}\n')
+            sys.stderr.write(f'UNHANDLED data: {data}\n')
             sys.exit(1)
         
 
@@ -541,10 +566,11 @@ class Mf6NetCDFModel:
                 shape = ['NROW', 'NCOL']
             #elif pkgtype.upper() == 'DISV':
             #    shape = ['ncpl']
-        if griddata:
-            aname = f"{pkgname.lower()}_{varname.lower()}_griddata"
-        else:
-            aname = f"{pkgname.lower()}_{varname.lower()}"
+        #if griddata:
+        #    aname = f"{pkgname.lower()}_{varname.lower()}_griddata"
+        #else:
+        #    aname = f"{pkgname.lower()}_{varname.lower()}"
+        aname = f"{pkgname.lower()}_{varname.lower()}"
         if shape == '':
             grpvar = self._dataset.createVariable(aname, dtype)
         else:
@@ -561,7 +587,7 @@ class Mf6NetCDFModel:
             
         grpvar.mf6_input = f"{pkgtype.upper()}6:{self._modelname.upper()}/{pkgname.upper()}/{varname.upper()}"
         if griddata:
-            grpvar.mf6_griddata = iper_l
+            grpvar.mf6_iper = iper_l
         grpvar[:] = data
 
     def create_var(self, component, pkgtype, pkgname, blockname, varname, dtype, shape, fill=None):

@@ -70,19 +70,20 @@ processing.
 | Attribute             |           Meaning             |     Example(s)              |        Comment
 |-----------------------|-------------------------------|-----------------------------|-------------------------------------
 | mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: [PKGTYPE]:[COMPONENT-NAME]/[SUBCOMPONENT-NAME]/[PARAM-TAG]
-| mf6_griddata          | Griddata iper integer array   | mf6_griddata = 1,5,8        | dynamic griddata variable load periods
+| mf6_iper              | readasarrays param iper array | mf6_iper = 1,5,8            | Designated load periods defined for readasarrays period parameters
 
 
 Input Processing
 ----------------
 With the following exceptions, mf6_input parameter tags have a direct correspondence
-to dfn file block parameter names.  The input associated with the following tag or tag
-classes is handled differently when compared to ASCII inputs and is described here:
+to dfn file block parameter names.  The input associated with the following tags or tag
+classes is in some ways handled differently when compared to ASCII inputs and is described
+here:
 
 ### IPER
-The intent of iper variable is to reduce the amount of data written to the
-NetCDF file.  IPER arrays provide a list of integers that are analogous to
-ASCII input period block variables. The indexes of IPER arrays are used to
+The intent of a package iper variable is to reduce the amount of data written
+to the NetCDF file.  IPER arrays provide a list of integers that are analogous
+to ASCII input period block variables. The indexes of IPER arrays are used to
 access relevant read and load variable period data at the right time.
 
 An IPER variable is required per packge (List and Array based input) but the
@@ -97,8 +98,34 @@ int ghb_0_iper(ghb_0_niper) ;
 // iper variable data
 ghb_0_iper = 1, 4 ;
 ```
+### \*\_RECORD
+Parameter sets defined as record types in a dfn file have no direct correspondance
+in a NetCDF4 file.  Instead, the individual constituents of the record are each
+defined when relevant.  For example:
 
+```
+// ASCI input REWET in NPF OPTIONS block
+REWET  WETFCT       1.00000000  IWETIT  1  IHDWET  1
+
+// Analogous NetCDF4 declarations
+int npf_rewet ;
+        npf_rewet:mf6_input = "NPF6:GWF0/NPF/REWET" ;
+double npf_wetfct ;
+        npf_wetfct:mf6_input = "NPF6:GWF0/NPF/WETFCT" ;
+int64 npf_iwetit ;
+        npf_iwetit:mf6_input = "NPF6:GWF0/NPF/IWETIT" ;
+int64 npf_ihdwet ;
+        npf_ihdwet:mf6_input = "NPF6:GWF0/NPF/IHDWET" ;
+
+// data
+npf_rewet = 1 ;
+npf_wetfct = 1 ;
+npf_iwetit = 1 ;
+npf_ihdwet = 1 ;
+
+```
 ### \*\_FILERECORD
+*NOTE currently being reconsidered to align with above approach for all record inputs*
 These tags are associated with a record that defines an input
 or output file specification.  In a NetCDF input file, these tags are associated
 with character arrays with a dimension of "LINELENGTH" which is set to the file
@@ -134,14 +161,14 @@ wel-1_auxiliary =
   "CONCENTRATION   " ;
 ```
 
-Attribute mf6_griddata
+Attribute mf6_iper
 ----------------------
 
 When READASARRAYS is read for a package that supports Array based input,
-PERIOD data variables must define the additional attribute "mf6_griddata",
+PERIOD data variables must define the additional attribute "mf6_iper",
 a 1d data array that represents load periods for the parameter. The intent
-of this attribute is similar to that of "IPER" variable, and the mf6_griddata
-1d array should always be a subset of the package "IPER" 1d array.
+of this attribute is similar to that of the package "IPER" variable, and the
+mf6_iper 1d array should always be a subset of the package "IPER" 1d array.
 
 An example:
 ```
@@ -152,11 +179,11 @@ int rcha_0_iper(rcha_0_niper) ;
 // iper variable data
 rcha_0_iper = 1, 5, 8 ;
 
-// recharge declaration with mf6_griddata 1d array as subset of package IPER array
-double rcha_0_recharge_griddata(rcha_0_niper, NLAY, NROW, NCOL) ;
-        rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
-        rcha_0_recharge_griddata:mf6_input = "RCHA6:CSUB_SUB03A/RCHA_0/RECHARGE" ;
-        rcha_0_recharge_griddata:mf6_griddata = 1LL, 8LL ;
+// recharge declaration with mf6_iper 1d array as subset of package IPER array
+double rcha_0_recharge(rcha_0_niper, NLAY, NROW, NCOL) ;
+        rcha_0_recharge:_FillValue = 3.e+30 ;
+        rcha_0_recharge:mf6_input = "RCHA6:CSUB_SUB03A/RCHA_0/RECHARGE" ;
+        rcha_0_recharge:mf6_iper = 1LL, 8LL ;
 ```
 
 MODFLOW 6 NetCDF Array parameter input format
@@ -169,13 +196,13 @@ visualizing the NetCDF file with external tools.
 A simple example from example test_gwf_rch03 is shown here:
 ```
 // declaration
-double rcha_0_recharge_griddata(rcha_0_niper, NLAY, NROW, NCOL) ;
-        rcha_0_recharge_griddata:_FillValue = 3.e+30 ;
-        rcha_0_recharge_griddata:mf6_input = "RCHA6:RCH/RCHA_0/RECHARGE" ;
-        rcha_0_recharge_griddata:mf6_griddata = 1LL ;
+double rcha_0_recharge(rcha_0_niper, NLAY, NROW, NCOL) ;
+        rcha_0_recharge:_FillValue = 3.e+30 ;
+        rcha_0_recharge:mf6_input = "RCHA6:RCH/RCHA_0/RECHARGE" ;
+        rcha_0_recharge:mf6_iper = 1LL ;
 
 // data
-rcha_0_recharge_griddata =
+rcha_0_recharge =
  _, 2, 3, 4, 5,
  6, _, 8, _, 10,
  11, _, 13, _, 15,

@@ -53,7 +53,7 @@ variables:
 
 // global attributes:
 		:description = "MODFLOW 6 NetCDF4 file prototype" ;
-		:history = "Created Fri Oct 27 12:52:12 2023" ;
+		:history = "Created Mon Oct 30 09:15:35 2023" ;
 		:source = "mf6netcdf4.py" ;
 		:mf6_modeltype = "GWF6" ;
 		:mf6_modelname = "LEFTMODEL" ;
