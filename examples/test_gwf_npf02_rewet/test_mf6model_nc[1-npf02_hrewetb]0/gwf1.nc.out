@@ -1,0 +1,178 @@
+netcdf gwf1 {
+dimensions:
+	LINELENGTH = 300 ;
+	LENAUXNAME = 16 ;
+	LENBOUNDNAME = 40 ;
+	NPER = 2 ;
+	NLAY = 1 ;
+	NROW = 10 ;
+	NCOL = 5 ;
+	NCPL = 50 ;
+	NCELLDIM = 3 ;
+	chd2_maxbound = 10 ;
+	chd2_niper = 1 ;
+variables:
+	int dis_nlay ;
+		dis_nlay:mf6_input = "DIS6:GWF1/DIS/NLAY" ;
+	int dis_nrow ;
+		dis_nrow:mf6_input = "DIS6:GWF1/DIS/NROW" ;
+	int dis_ncol ;
+		dis_ncol:mf6_input = "DIS6:GWF1/DIS/NCOL" ;
+	double dis_delr(NCOL) ;
+		dis_delr:_FillValue = 3.e+30 ;
+		dis_delr:mf6_input = "DIS6:GWF1/DIS/DELR" ;
+	double dis_delc(NROW) ;
+		dis_delc:_FillValue = 3.e+30 ;
+		dis_delc:mf6_input = "DIS6:GWF1/DIS/DELC" ;
+	double dis_top(NROW, NCOL) ;
+		dis_top:_FillValue = 3.e+30 ;
+		dis_top:mf6_input = "DIS6:GWF1/DIS/TOP" ;
+	double dis_botm(NLAY, NROW, NCOL) ;
+		dis_botm:_FillValue = 3.e+30 ;
+		dis_botm:mf6_input = "DIS6:GWF1/DIS/BOTM" ;
+	int npf_save_flows ;
+		npf_save_flows:mf6_input = "NPF6:GWF1/NPF/SAVE_FLOWS" ;
+	int npf_rewet ;
+		npf_rewet:mf6_input = "NPF6:GWF1/NPF/REWET" ;
+	double npf_wetfct ;
+		npf_wetfct:mf6_input = "NPF6:GWF1/NPF/WETFCT" ;
+	int64 npf_iwetit ;
+		npf_iwetit:mf6_input = "NPF6:GWF1/NPF/IWETIT" ;
+	int64 npf_ihdwet ;
+		npf_ihdwet:mf6_input = "NPF6:GWF1/NPF/IHDWET" ;
+	int npf_icelltype(NLAY, NROW, NCOL) ;
+		npf_icelltype:_FillValue = -2147483647 ;
+		npf_icelltype:mf6_input = "NPF6:GWF1/NPF/ICELLTYPE" ;
+	double npf_k(NLAY, NROW, NCOL) ;
+		npf_k:_FillValue = 3.e+30 ;
+		npf_k:mf6_input = "NPF6:GWF1/NPF/K" ;
+	double npf_wetdry(NLAY, NROW, NCOL) ;
+		npf_wetdry:_FillValue = 3.e+30 ;
+		npf_wetdry:mf6_input = "NPF6:GWF1/NPF/WETDRY" ;
+	int chd2_print_input ;
+		chd2_print_input:mf6_input = "CHD6:GWF1/CHD2/PRINT_INPUT" ;
+	int chd2_save_flows ;
+		chd2_save_flows:mf6_input = "CHD6:GWF1/CHD2/SAVE_FLOWS" ;
+	int chd2_maxbound ;
+		chd2_maxbound:mf6_input = "CHD6:GWF1/CHD2/MAXBOUND" ;
+	int chd2_iper(chd2_niper) ;
+		chd2_iper:mf6_input = "CHD6:GWF1/CHD2/IPER" ;
+	int chd2_cellid(chd2_niper, chd2_maxbound, NCELLDIM) ;
+		chd2_cellid:_FillValue = -2147483647 ;
+		chd2_cellid:mf6_input = "CHD6:GWF1/CHD2/CELLID" ;
+	double chd2_head(chd2_niper, chd2_maxbound) ;
+		chd2_head:_FillValue = 3.e+30 ;
+		chd2_head:mf6_input = "CHD6:GWF1/CHD2/HEAD" ;
+
+// global attributes:
+		:description = "MODFLOW 6 NetCDF4 file prototype" ;
+		:history = "Created Mon Oct 30 09:20:40 2023" ;
+		:source = "mf6netcdf4.py" ;
+		:mf6_modeltype = "GWF6" ;
+		:mf6_modelname = "GWF1" ;
+		:Conventions = "CF-1.8" ;
+data:
+
+ dis_nlay = 1 ;
+
+ dis_nrow = 10 ;
+
+ dis_ncol = 5 ;
+
+ dis_delr = 500, 500, 500, 500, 500 ;
+
+ dis_delc = 500, 500, 500, 500, 500, 500, 500, 500, 500, 500 ;
+
+ dis_top =
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150,
+  150, 150, 150, 150, 150 ;
+
+ dis_botm =
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50,
+  -50, -50, -50, -50, -50 ;
+
+ npf_save_flows = 1 ;
+
+ npf_rewet = 1 ;
+
+ npf_wetfct = 1 ;
+
+ npf_iwetit = 1 ;
+
+ npf_ihdwet = 1 ;
+
+ npf_icelltype =
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1 ;
+
+ npf_k =
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10,
+  10, 10, 10, 10, 10 ;
+
+ npf_wetdry =
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001,
+  -0.001, -0.001, -0.001, -0.001, -0.001 ;
+
+ chd2_print_input = 1 ;
+
+ chd2_save_flows = 1 ;
+
+ chd2_maxbound = 10 ;
+
+ chd2_iper = 1 ;
+
+ chd2_cellid =
+  1, 1, 5,
+  1, 2, 5,
+  1, 3, 5,
+  1, 4, 5,
+  1, 5, 5,
+  1, 6, 5,
+  1, 7, 5,
+  1, 8, 5,
+  1, 9, 5,
+  1, 10, 5 ;
+
+ chd2_head =
+  -40, -40, -40, -40, -40, -40, -40, -40, -40, -40 ;
+}
