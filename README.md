@@ -67,11 +67,11 @@ use appropriate variable attributes.
 These variable attributes describe input parameters for MODFLOW 6 input
 processing.
 
-| Attribute             |           Meaning             |     Example(s)              |        Comment
-|-----------------------|-------------------------------|-----------------------------|-------------------------------------
-| mf6_input             | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"    | Format: [PKGTYPE]:[COMPONENT-NAME]/[SUBCOMPONENT-NAME]/[PARAM-TAG]
-| mf6_iper              | readasarrays param iper array | mf6_iper = 1,5,8            | Designated load periods defined for readasarrays period parameters
-
+| Attribute        |           Meaning             |     Example(s)                                |        Comment
+|------------------|-------------------------------|-----------------------------------------------|-------------------------------------
+| mf6_input        | Modflow 6 iput string         | "WEL6:GWF_MST03/WEL-1/Q"                      | Format: [PKGTYPE]:[COMPONENT-NAME]/[SUBCOMPONENT-NAME]/[PARAM-TAG]
+| mf6_iper         | readasarrays param iper array | mf6_iper = 1,5,8                              | Designated load periods defined per readasarrays period parameter
+| mf6_timeseries   | parameter ts variable         | [csub_sk03a.cdl](examples/cdl/csub_sk03a.cdl) |
 
 Input Processing
 ----------------
@@ -125,7 +125,6 @@ npf_ihdwet = 1 ;
 
 ```
 ### \*\_FILERECORD
-*NOTE currently being reconsidered to align with above approach for all record inputs*
 These tags are associated with a record that defines an input
 or output file specification.  In a NetCDF input file, these tags are associated
 with character arrays with a dimension of "LINELENGTH" which is set to the file
@@ -185,6 +184,21 @@ double rcha_0_recharge(rcha_0_niper, NLAY, NROW, NCOL) ;
         rcha_0_recharge:mf6_input = "RCHA6:CSUB_SUB03A/RCHA_0/RECHARGE" ;
         rcha_0_recharge:mf6_iper = 1LL, 8LL ;
 ```
+
+Attribute mf6_timseries
+-----------------------
+An input parameter mf6_timeseries attributes is set to the name of an associated
+netcdf variable that stores timeseries names.  This special variable should only
+exist (and mf6_timeseries set) when the input parameter supports timeseries and
+the package has a TS6 file input.
+
+The timeseries variable is not an mf6 input parameter and does not define the
+mf6_input attribute.  It is type ```char``` and has the same dimensions of its
+associated parameter.  It defines timeseries names, when appropriate, that relate
+to the period cellid id array.  Where the timeseries array defines a string name,
+the associated numeric variable will be set to DNODATA.
+
+A complete example is shown here:  [csub_sk03a.cdl](examples/cdl/csub_sk03a.cdl)
 
 MODFLOW 6 NetCDF Array parameter input format
 ---------------------------------------------
