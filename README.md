@@ -1,20 +1,16 @@
 NetCDF4 for MODFLOW 6
 =====================
 
-This repository has been set up to provide a few NetCDF4 example files
-in the context of existing MODFLOW 6 autotests for the purposes of review
-and feedback.
+This repository provides documentation realated to Modflow 6 NetCDF4
+input files, a new capability under development.
 
-Any part of this proposal is open to discussion and modification, feel
-free to create a discussion or otherwise send feedback.
+A few example cdl file can be found in the [cdl](examples/cdlexamples/cdl)
+directory.
 
-Examples are under the examples directory and the complimentary ASCII
-examples are also there for comparison.  An additional ncdump file of
-the *.nc* file has also been added to each netcdf run directory for
-convenience- these are named with the extension *.nc.out*
-
-A starting point for each example is to compare GWF model namefiles
-for each paired ASCII and netcdf test.
+- [Input NetCDF4](#File organization and purpose)
+- [Attributes](#MODFLOW 6 NetCDF attributes)
+- [ODM](#Output Data Model)
+- [Dfns](#Definitions)
 
 File organization and purpose
 -----------------------------
@@ -39,6 +35,8 @@ Basic assumptions:
 * List based input is not aggregated into a single block of data as
   with ASCII based inputs but instead is considered the set of dynamic
   input parameters, related by index, needed for that package.
+* Parameter user tagnames are assumed to be unique to an "input package",
+  i.e. globally unique in a dfn file.
 
 MODFLOW 6 NetCDF attributes
 ---------------------------
@@ -160,7 +158,7 @@ wel-1_auxiliary =
   "CONCENTRATION   " ;
 ```
 
-Attribute mf6_iper
+### Attribute mf6_iper
 ----------------------
 
 When READASARRAYS is read for a package that supports Array based input,
@@ -185,7 +183,7 @@ double rcha_0_recharge(rcha_0_niper, NLAY, NROW, NCOL) ;
         rcha_0_recharge:mf6_iper = 1LL, 8LL ;
 ```
 
-Attribute mf6_timeseries
+### Attribute mf6_timeseries
 -----------------------
 An input parameter mf6_timeseries attribute is set to the name of an associated
 netcdf variable that stores timeseries names.  This special variable should only
@@ -200,33 +198,9 @@ the associated numeric variable will be set to DNODATA.
 
 A complete example is shown here:  [csub_sk03a.cdl](examples/cdl/csub_sk03a.cdl)
 
-MODFLOW 6 NetCDF Array parameter input format
----------------------------------------------
-
-Array based (READASARRAYS) input parameters (e.g. RECHARGE) are expected to
-be fully gridded, when possible, for the additional purpose of reading and
-visualizing the NetCDF file with external tools.
-
-A simple example from example test_gwf_rch03 is shown here:
-```
-// declaration
-double rcha_0_recharge(rcha_0_niper, NLAY, NROW, NCOL) ;
-        rcha_0_recharge:_FillValue = 3.e+30 ;
-        rcha_0_recharge:mf6_input = "RCHA6:RCH/RCHA_0/RECHARGE" ;
-        rcha_0_recharge:mf6_iper = 1LL ;
-
-// data
-rcha_0_recharge =
- _, 2, 3, 4, 5,
- 6, _, 8, _, 10,
- 11, _, 13, _, 15,
- 16, 17, 18, 19, 20,
- 1, _, _, _, _,
- _, 7, _, 9, _,
- _, 12, _, 14, _,
- _, _, _, _, _ ;
-```
+Output Data Model
+-----------------
 
 
-
-
+Definitions
+-----------

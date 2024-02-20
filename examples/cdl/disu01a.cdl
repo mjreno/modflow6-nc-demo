@@ -11,13 +11,10 @@ dimensions:
 	dim_chd_0_niper = 1 ;
 variables:
 	double disu_vertical_offset_tolerance ;
-		disu_vertical_offset_tolerance:_FillValue = 3.e+30 ;
 		disu_vertical_offset_tolerance:mf6_input = "DISU6:DISU01A/DISU/VERTICAL_OFFSET_TOLERANCE" ;
 	int disu_nodes ;
-		disu_nodes:_FillValue = -2147483647 ;
 		disu_nodes:mf6_input = "DISU6:DISU01A/DISU/NODES" ;
 	int disu_nja ;
-		disu_nja:_FillValue = -2147483647 ;
 		disu_nja:mf6_input = "DISU6:DISU01A/DISU/NJA" ;
 	double disu_top(NODES) ;
 		disu_top:_FillValue = 3.e+30 ;
@@ -53,7 +50,6 @@ variables:
 		npf_k:_FillValue = 3.e+30 ;
 		npf_k:mf6_input = "NPF6:DISU01A/NPF/K" ;
 	int chd_0_maxbound ;
-		chd_0_maxbound:_FillValue = -2147483647 ;
 		chd_0_maxbound:mf6_input = "CHD6:DISU01A/CHD_0/MAXBOUND" ;
 	int chd_0_cellid(dim_chd_0_niper, dim_chd_0_maxbound, NCELLDIM) ;
 		chd_0_cellid:_FillValue = -2147483647 ;
@@ -67,11 +63,11 @@ variables:
 
 // global attributes:
 		:description = "MODFLOW 6 NetCDF4 file prototype" ;
-		:history = "Created Tue Jan 30 16:02:16 2024" ;
-		:source = "mf6netcdf4.py" ;
+		:history = "Created Tue Feb 20 08:30:12 2024" ;
+		:source = "flopy v3.5.0.dev0" ;
 		:mf6_modeltype = "GWF6" ;
 		:mf6_modelname = "DISU01A" ;
-		:Conventions = "CF-1.8" ;
+		:Conventions = "" ;
 data:
 
  disu_vertical_offset_tolerance = 0 ;
