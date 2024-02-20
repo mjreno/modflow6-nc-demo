@@ -7,13 +7,13 @@ input files, a new capability under development.
 A few example cdl file can be found in the [cdl](examples/cdlexamples/cdl)
 directory.
 
-- [Input NetCDF4](#File organization and purpose)
-- [Attributes](#MODFLOW 6 NetCDF attributes)
-- [ODM](#Output Data Model)
+- [NetCDF4](#netcdf)
+- [Attributes](#attributes)
+- [ODM](#ODM)
 - [Dfns](#Definitions)
 
-File organization and purpose
------------------------------
+NetCDF
+------
 
 The example NetCDF files are intended to demonstrate their ability
 to serve as Model input sources for packages that are already integrated
@@ -38,8 +38,8 @@ Basic assumptions:
 * Parameter user tagnames are assumed to be unique to an "input package",
   i.e. globally unique in a dfn file.
 
-MODFLOW 6 NetCDF attributes
----------------------------
+Attributes
+----------
 
 Attributes are a NetCDF feature that support the aim of self-describing
 files.  They can be used to describe additional properties of data or
@@ -198,8 +198,8 @@ the associated numeric variable will be set to DNODATA.
 
 A complete example is shown here:  [csub_sk03a.cdl](examples/cdl/csub_sk03a.cdl)
 
-Output Data Model
------------------
+ODM
+---
 
 
 Definitions
