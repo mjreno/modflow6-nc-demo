@@ -7,17 +7,16 @@ input files, a new capability under development.
 A few example cdl file can be found in the [cdl](examples/cdlexamples/cdl)
 directory.
 
-- [NetCDF4](#netcdf)
+- [NetCDF](#modflow6-netcdf)
 - [Attributes](#attributes)
 - [ODM](#ODM)
 - [Dfns](#Definitions)
 
-NetCDF
-------
+Modflow6-NetCDF
+---------------
 
-The example NetCDF files are intended to demonstrate their ability
-to serve as Model input sources for packages that are already integrated
-with IDM.
+The example files are intended to show the organization of Modflow 6
+Idm integrated package data in model netcdf4 inputs.
 
 Basic assumptions:
 * A NetCDF4 file describes inputs for a single Model
@@ -71,7 +70,7 @@ processing.
 | mf6_iper         | readasarrays param iper array | mf6_iper = 1,5,8                              | Designated load periods defined per readasarrays period parameter
 | mf6_timeseries   | parameter ts variable         | [csub_sk03a.cdl](examples/cdl/csub_sk03a.cdl) |
 
-Input Processing
+## Input Processing
 ----------------
 With the following exceptions, mf6_input parameter tags have a direct correspondence
 to dfn file block parameter names.  The input associated with the following tags or tag
