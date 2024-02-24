@@ -197,61 +197,65 @@ wel-1_auxiliary =
   "CONCENTRATION   " ;
 ```
 
-ODM
----
+ODM NetCDF
+----------
 
-The Output Data Model is intended to support writing simulation data to various output
-destinations in the same way that IDM is set up to support various input sources. NetCDF
-is also an intended ODM file type.
+The Output Data Model will support writing simulation data to various output
+destinations. NetCDF is also an intended output file type.
 
-This section is outline some possible differences between NetCDF input and output files,
-and not the mechanism by which a user selects an ODM option.
+With both input and output NetCDF files the file organization is directly related
+to its intended use.  Input files are internal and, similar to ascii inputs, contain
+data related to configuration, references to other objects, grid descriptions,
+hydrologic parameters and initial conditions.  The output file should contain timeseries
+simulation output, suitable for post-processing and visualization.
 
-The most important distinction between an input and output NetCDF file is the organization
-of the files and intended use.  Internal files are intended primarily for internal use:
+NetCDF inputs:
+- Modflow 6 attributes refer to parameter definitions
+- Variables related to options/configuration, grid descriptions, hydrologic parameters, stress data, etc.
+- Data structured to support input processing
+- No time dimension
+- Possible future aggregation into larger simulation scoped files that support netcdf groups
 
-- "proprietary" attributes
-- refer to intenal definitions
-- datatypes that aren't typical for geoscience NetCDF files
-- data that might be structured for input reads, or for how internal data in the simulation is represented
-- data that is not stuctured or necessarily intended for external visualiztion tools
-- atypical, or no, representation of timeseries information
-- Possible future aggregation into larger simulation scoped files that support groups
-
-On the other hand, external (ODM) NetCDF files should better suit users:
-
-- CF conventions and UGRID conventions (when appropriate) compliance
-- Output parameters of interest to the modeling scenio
-- Output parameters annotated with relevant external convention attributes
-- Gridded data structured as appropriate for visulation
-- Timeseries data represented in a typical way along a time dimension, unlimited if necessary
+NetCDF outputs:
+- Supported option regardless of input source (ASCII/NetCDF)
+- Conventions compliance (CF conventions/UGRID as relevant) [cfconventions-1.11](https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.pdf) [UGRID-1.0](https://ugrid-conventions.github.io/ugrid-conventions/)
+- Output (selectable) parameters of interest to the modeling scenario
+- Parameters annotated with relevant external convention attributes [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
+- Gridded, timeseries datasets, regardless of input discretization (except when not possible)
 - CRS information and Grid mapping variables, when relevant
-- Optional distinct representation of grid with UGRID
+- Optional UGRID representation of grid and data (UGRID option)
 
-The last point implies the potential for different types of NetCDF output files to be
-selectable by the user.
+Question:  would supporting NetCDF outputs in this way be a desireable option
+           for users that don't necessarily need parallel support?
 
 
 Definitions
 -----------
 
-Parameter definitions are a critical piece that underscore IDM.  This section captures
-a few points that may be relevant for discussions related to a definition set refactor.
+Parameter definitions are foundational to IDM.  This section captures a few points related
+to improvement.
 
-Definition (.dfn) files describe the set of user input tags for a given input "component",
+Definition (.dfn) files describe the set of user input tags for a given input component,
 typically a model package.  Appropriate supported attributes are defined for a parameter,
-and these are used by IDM to interpret the input.  The files are currently ASCII, and there
-is momentum towards formalizing the system.  A possible file type under consideration is TOML
-(see [toml](examples/dfn/GWF-CHD.toml). The points following are for general consideration,
-regardless of the file type chosen:
+and these are used by IDM to interpret the input.
 
-- An component ASCII file might be still be the most straightforward way for developers
-  to create or update definitions for a new or existing model
-- A tool could be used to validate ASCII inputs and formalize in the creation of TOML
-  files that are inputs to other systems.
-- An extra layer like this could perform multiple functions:
-  - Validation of ASCII
-  - Creation of parameter "types", if useful, with unique attribute sets
-  - Standarization of attribute initialization
-  - Atrribute scopes, e.g. parameter or component (file scope)
+Definition files are text files written by developers implementing or extending Modflow 6
+models.  The files are directly consumed by scripts that create Modflow 6 documentation
+and by the IDM script that generates fortran versions of the definitions used by Modflow 6.
 
+The points below are aimed at keeping a straightforward way to add or update definitions,
+while adding a layer that formalizes, standardizes and validates them. Definitions would
+be inputs to dfn validation tools, with the outputs being TOML or similar.  A simple TOML
+example is [here](examples/dfn/GWF-CHD.toml).
+
+A summary of this type of approach:
+- Keep exisiting text component definition files, clean up documentation and add new approach
+- File scoped "comments" relevant to component processing become component scoped attributes in TOML (see TOML file as example)
+- All TOML parameters assigned same set of attributes, with appropriate defaults
+  - Validation layer defines attributes, tags some as required, and applies defaults
+  - Required parameter attributes must be defined in ASCII
+  - Any ascii provided param attribute overrides defaults but subject to checks
+  - Validation layer verifies attributes (e.g. type checks, shape string restrictions, checks "valid" list, etc.)
+  - Validation layer throws errors on unsupported or invalid attributes
+  - Consider defining a small set of paramter types, each with a unique attribute set
+- Other systems wouldn't be precluded from reading ASCII definition files, but would be encouraged to read TOML
