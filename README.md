@@ -9,8 +9,8 @@ directory.
 
 - [NetCDF](#modflow6-netcdf)
 - [Attributes](#attributes)
-- [ODM](#ODM NetCDF)
-- [Dfns](#Definitions)
+- [ODM](#odm-netcdf)
+- [Dfns](#definitions)
 
 Modflow6-NetCDF
 ---------------
@@ -222,7 +222,7 @@ wel-1_auxiliary =
   "CONCENTRATION   " ;
 ```
 
-ODM NetCDF
+ODM-NetCDF
 ----------
 
 The Output Data Model will support writing simulation data to various output
@@ -247,11 +247,10 @@ NetCDF outputs:
 - Output (selectable per package?) parameters of interest to the modeling scenario
 - Parameters annotated with relevant external convention attributes [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
 - Gridded, timeseries datasets, regardless of input discretization (except when not possible)
-- CRS information and Grid mapping variables, when relevant
+- CRS information and Grid mapping variables
 - Optional UGRID representation of grid and data (UGRID option)
 
-Question:  would supporting NetCDF outputs in this way be a desireable option
-           for users that don't necessarily need parallel support?
+would supporting NetCDF outputs in this way be a good option for non-parallel users
 
 
 Definitions
