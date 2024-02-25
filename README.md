@@ -9,7 +9,7 @@ directory.
 
 - [NetCDF](#modflow6-netcdf)
 - [Attributes](#attributes)
-- [ODM](#ODM)
+- [ODM](#ODM NetCDF)
 - [Dfns](#Definitions)
 
 Modflow6-NetCDF
@@ -243,7 +243,7 @@ NetCDF inputs:
 
 NetCDF outputs:
 - Supported option regardless of input source (ASCII/NetCDF)
-- Conventions compliance (CF conventions/UGRID as relevant) [cfconventions-1.11](https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.pdf) [UGRID-1.0](https://ugrid-conventions.github.io/ugrid-conventions/)
+- Conventions compliance [cfconventions-1.11](https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.pdf) [UGRID-1.0](https://ugrid-conventions.github.io/ugrid-conventions/)
 - Output (selectable per package?) parameters of interest to the modeling scenario
 - Parameters annotated with relevant external convention attributes [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
 - Gridded, timeseries datasets, regardless of input discretization (except when not possible)
@@ -272,7 +272,7 @@ example is [here](examples/dfn/GWF-CHD.toml).
 
 Approach summary:
 - Keep exisiting text component definition files, clean up documentation and add description of new behaviours
-- File scoped "comments" relevant to component processing become component scoped attributes in TOML (see TOML file as example)
+- File scoped "comments" relevant to component processing become component scoped attributes in [TOML](examples/dfn/GWF-CHD.toml)
 - All TOML parameters assigned same set of attributes, with appropriate defaults
   - Validation layer defines attributes, tags some as required, and applies defaults
   - Required parameter attributes must be defined in ASCII
