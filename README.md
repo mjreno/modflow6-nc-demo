@@ -166,8 +166,10 @@ defined when relevant.  For example:
 ```
 // ASCI input REWET in NPF OPTIONS block
 REWET  WETFCT       1.00000000  IWETIT  1  IHDWET  1
+```
+```
 
-// Analogous NetCDF declarations
+// NetCDF declarations
 int npf_rewet ;
         npf_rewet:mf6_input = "NPF6:GWF0/NPF/REWET" ;
 double npf_wetfct ;
@@ -224,14 +226,12 @@ ODM NetCDF
 ----------
 
 The Output Data Model will support writing simulation data to various output
-destinations. NetCDF is also an intended output file type.
+destinations. NetCDF is an intended output file type.
 
-With both input and output NetCDF files the file organization is directly related
-to its intended use.  Input files are internal and, similar to ascii inputs, contain
-data related to configuration, references to other objects, grid descriptions,
-hydrologic parameters, initial conditions and dynamic stress data.  The output file
-should primarily contain gridded timeseries simulation output, suitable for
-post-processing and visualization.
+Input files are internal and, similar to ascii inputs, contain data related to
+configuration, references to other objects, grid descriptions, hydrologic parameters,
+initial conditions and dynamic stress data.  The output file should primarily contain
+gridded timeseries simulation output, suitable for post-processing and visualization.
 
 NetCDF inputs:
 - A configuration and input file, directly comparable to ASCII input files
@@ -258,20 +258,15 @@ Definitions
 -----------
 
 Definition (.dfn) files describe the set of user input tags for a given input component,
-typically a model package.  Appropriate supported attributes are defined for a parameter,
-and these are used by IDM to interpret the input.
+typically a model package.  Attributes are defined for a parameter and these are used by
+IDM to interpret the input.
 
 Definition files are text files written by developers implementing or extending Modflow 6
 models.  The files are directly consumed by scripts that create Modflow 6 documentation
 and by the IDM script that generates fortran versions of the definitions used by Modflow 6.
 
-The points below are aimed at keeping a straightforward way to add or update definitions,
-while adding a layer that formalizes, standardizes and validates them. Definitions would
-be inputs to dfn validation tools, with the outputs being TOML or similar.  A simple TOML
-example is [here](examples/dfn/GWF-CHD.toml).
-
-Approach summary:
-- Keep exisiting text component definition files, clean up documentation and add description of new behaviours
+Approach:
+- Keep exisiting text component definition files, clean up documentation and add new descriptions
 - File scoped "comments" relevant to component processing become component scoped attributes in [TOML](examples/dfn/GWF-CHD.toml)
 - All TOML parameters assigned same set of attributes, with appropriate defaults
   - Validation layer defines attributes, tags some as required, and applies defaults
@@ -280,4 +275,4 @@ Approach summary:
   - Validation layer verifies attributes (e.g. type checks, shape string restrictions, checks "valid" list, etc.)
   - Validation layer throws errors on unsupported or invalid attributes
   - Consider defining a small set of paramter types, each with a unique attribute set
-- Other systems could read ASCII definition files, but TOML would be better source
+- Scripts using definitions updated to use TOML
