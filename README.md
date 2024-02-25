@@ -229,20 +229,22 @@ destinations. NetCDF is also an intended output file type.
 With both input and output NetCDF files the file organization is directly related
 to its intended use.  Input files are internal and, similar to ascii inputs, contain
 data related to configuration, references to other objects, grid descriptions,
-hydrologic parameters and initial conditions.  The output file should contain timeseries
-simulation output, suitable for post-processing and visualization.
+hydrologic parameters, initial conditions and dynamic stress data.  The output file
+should primarily contain gridded timeseries simulation output, suitable for
+post-processing and visualization.
 
 NetCDF inputs:
+- A configuration and input file, directly comparable to ASCII input files
 - Modflow 6 attributes refer to parameter definitions
 - Variables related to options/configuration, grid descriptions, hydrologic parameters, stress data, etc.
 - Data structured to support input processing
-- No time dimension
+- No time dimension or timeseries data other than input filenames and timeseries names
 - Possible future aggregation into larger simulation scoped files that support netcdf groups
 
 NetCDF outputs:
 - Supported option regardless of input source (ASCII/NetCDF)
 - Conventions compliance (CF conventions/UGRID as relevant) [cfconventions-1.11](https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.pdf) [UGRID-1.0](https://ugrid-conventions.github.io/ugrid-conventions/)
-- Output (selectable) parameters of interest to the modeling scenario
+- Output (selectable per package?) parameters of interest to the modeling scenario
 - Parameters annotated with relevant external convention attributes [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
 - Gridded, timeseries datasets, regardless of input discretization (except when not possible)
 - CRS information and Grid mapping variables, when relevant
@@ -254,9 +256,6 @@ Question:  would supporting NetCDF outputs in this way be a desireable option
 
 Definitions
 -----------
-
-Parameter definitions are foundational to IDM.  This section captures a few points related
-to improvement.
 
 Definition (.dfn) files describe the set of user input tags for a given input component,
 typically a model package.  Appropriate supported attributes are defined for a parameter,
@@ -271,8 +270,8 @@ while adding a layer that formalizes, standardizes and validates them. Definitio
 be inputs to dfn validation tools, with the outputs being TOML or similar.  A simple TOML
 example is [here](examples/dfn/GWF-CHD.toml).
 
-A summary of this type of approach:
-- Keep exisiting text component definition files, clean up documentation and add new approach
+Approach summary:
+- Keep exisiting text component definition files, clean up documentation and add description of new behaviours
 - File scoped "comments" relevant to component processing become component scoped attributes in TOML (see TOML file as example)
 - All TOML parameters assigned same set of attributes, with appropriate defaults
   - Validation layer defines attributes, tags some as required, and applies defaults
@@ -281,4 +280,4 @@ A summary of this type of approach:
   - Validation layer verifies attributes (e.g. type checks, shape string restrictions, checks "valid" list, etc.)
   - Validation layer throws errors on unsupported or invalid attributes
   - Consider defining a small set of paramter types, each with a unique attribute set
-- Other systems wouldn't be precluded from reading ASCII definition files, but would be encouraged to read TOML
+- Other systems could read ASCII definition files, but TOML would be better source
