@@ -250,28 +250,8 @@ NetCDF outputs:
 - CRS information and Grid mapping variables
 - Optional UGRID representation of grid and data (UGRID option)
 
-would supporting NetCDF outputs in this way be a good option for non-parallel users
-
 
 Definitions
 -----------
 
-Definition (.dfn) files describe the set of user input tags for a given input component,
-typically a model package.  Attributes are defined for a parameter and these are used by
-IDM to interpret the input.
-
-Definition files are text files written by developers implementing or extending Modflow 6
-models.  The files are directly consumed by scripts that create Modflow 6 documentation
-and by the IDM script that generates fortran versions of the definitions used by Modflow 6.
-
-Approach:
-- Keep exisiting text component definition files, clean up documentation and add new descriptions
-- File scoped "comments" relevant to component processing become component scoped attributes in [TOML](examples/dfn/GWF-CHD.toml)
-- All TOML parameters assigned same set of attributes, with appropriate defaults
-  - Validation layer defines attributes, tags some as required, and applies defaults
-  - Required parameter attributes must be defined in ASCII
-  - Any ascii provided param attribute overrides defaults but subject to checks
-  - Validation layer verifies attributes (e.g. type checks, shape string restrictions, checks "valid" list, etc.)
-  - Validation layer throws errors on unsupported or invalid attributes
-  - Consider defining a small set of paramter types, each with a unique attribute set
-- Scripts using definitions updated to use TOML
+- Example [TOML](examples/dfn/GWF-CHD.toml)
