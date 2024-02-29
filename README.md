@@ -234,21 +234,22 @@ initial conditions and dynamic stress data.  The output file should primarily co
 gridded timeseries simulation output, suitable for post-processing and visualization.
 
 NetCDF inputs:
-- A configuration and input file, directly comparable to ASCII input files
-- Modflow 6 attributes refer to parameter definitions
+- Configuration and input files (currently model), directly comparable to ASCII input files
+- Modflow 6 attributes refer to parameter input definitions
 - Variables related to options/configuration, grid descriptions, hydrologic parameters, stress data, etc.
 - Data structured to support input processing
 - No time dimension or timeseries data other than input filenames and timeseries names
 - Possible future aggregation into larger simulation scoped files that support netcdf groups
 
 NetCDF outputs:
-- Supported option regardless of input source (ASCII/NetCDF)
+- Supported option regardless of input source but requires a supported discretization type (ASCII/NetCDF)
 - Conventions compliance [cfconventions-1.11](https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.pdf) [UGRID-1.0](https://ugrid-conventions.github.io/ugrid-conventions/)
-- Output (selectable per package?) parameters of interest to the modeling scenario
-- Parameters annotated with relevant external convention attributes [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
-- Gridded, timeseries datasets, regardless of input discretization (except when not possible)
-- CRS information and Grid mapping variables
-- Optional UGRID representation of grid and data (UGRID option)
+- Gridded, timeseries datasets
+- Grid description provided via cf-conventions (cell boundaries, etc) or UGRID representation
+- Output selectable (by package?) parameters of interest to the modeling scenario. Per model output file?
+- Parameters annotated with relevant external convention attributes, including units, long_name, standard_name [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
+- Meaningful representation of time in the time coordinate based on TDIS input.  May require TIME_UNITS and a cf-conventions compliant input START_DATE_TIME, or assumed internal defaults
+- Support for CRS information / Grid mapping variables
 
 
 Definitions
