@@ -10,7 +10,6 @@ directory.
 - [NetCDF](#modflow6-netcdf)
 - [Attributes](#attributes)
 - [ODM](#odm-netcdf)
-- [Dfns](#definitions)
 
 Modflow6-NetCDF
 ---------------
@@ -250,9 +249,3 @@ NetCDF outputs:
 - Parameters annotated with relevant external convention attributes, including units, long_name, standard_name [standard-names](https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html)
 - Meaningful representation of time in the time coordinate based on TDIS input.  May require TIME_UNITS and a cf-conventions compliant input START_DATE_TIME, or assumed internal defaults
 - Support for CRS information / Grid mapping variables
-
-
-Definitions
------------
-
-- Example [TOML](examples/dfn/GWF-CHD.toml)
